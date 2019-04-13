@@ -21,5 +21,5 @@ class Account:
     id: int = attr.attr(default=None, metadata={"sql": "id;primary_key"})
     balance: float = attr.attr(default=0)
     score: float = attr.attr(default=0)
-    # created_at: datetime = attr.attr(default=None)
-    # updated_at: datetime = attr.attr(default=None)
+    created_at: datetime = attr.attr(default=None)
+    updated_at: datetime = attr.attr(default=None)

@@ -31,8 +31,8 @@ class User:
     phone: str = attr.attr(default="", metadata={"sql": "mobile"})
     account_id: int = attr.attr(default=None, metadata={"sql": "account_id", "json": "-"})
     account: Account = attr.attr(default=None, converter=lambda d: Account(**d), metadata={"sql": "-"})
-    # created_at: datetime = attr.attr(default=None)
-    # updated_at: datetime = attr.attr(default=None)
+    created_at: datetime = attr.attr(default=None)
+    updated_at: datetime = attr.attr(default=None)
 
     def __attrs_post_init__(self):
         # 从account推导account_id
