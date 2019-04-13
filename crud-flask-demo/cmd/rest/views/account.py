@@ -7,7 +7,6 @@
 # 2019-04-13
 
 import attr
-import simplejson as json
 import flask
 from flask.views import MethodView
 from werkzeug.exceptions import BadRequest
