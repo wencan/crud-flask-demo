@@ -23,3 +23,16 @@ class AccountAPI(MethodView):
 
         account = self._service.get_account(account_id)
         return flask.jsonify(attr.asdict(account))
+
+    def post(self, user_id: int, account_id: int):
+        '''充值'''
+
+        assert(user_id)
+        assert(account_id)
+
+        value = flask.request.form.get("value")
+        if value is None:
+            raise BadRequest("not value")
+
+        account = self._service.recharge(account_id, value=value)
+        return flask.jsonify(attr.asdict(account))

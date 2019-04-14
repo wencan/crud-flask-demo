@@ -20,8 +20,14 @@ def register_apis(app: Flask, user_service, account_service) -> typing.NoReturn:
 
     # 用户
     account_view = views.UserAPI.as_view("user_api", user_service)
+    # 获得指定用户
     app.add_url_rule("/users/<int:user_id>", view_func=account_view, methods=("GET",))
+    # 创建用户
+    app.add_url_rule("/users", view_func=account_view, methods=("POST",))
 
     # 账户
     account_view = views.AccountAPI.as_view("account_api", account_service)
+    # 获得指定账户
     app.add_url_rule("/users/<int:user_id>/accounts/<int:account_id>", view_func=account_view, methods=("GET",))
+    # 充值
+    app.add_url_rule("/users/<int:user_id>/accounts/<int:account_id>/recharge", view_func=account_view, methods=("POST",))
