@@ -7,14 +7,9 @@
 # 2019-04-12
 
 import attr
-import typing
-import sqlalchemy
-import sqlalchemy.orm
-import random
-import string
-from .account import Account
-from datetime import datetime, date, time, timedelta
+from datetime import datetime
 
+from .account import Account
 
 __all__ = ("User")
 
@@ -34,8 +29,8 @@ class User:
     created_at: datetime = attr.attr(default=None)
     updated_at: datetime = attr.attr(default=None)
 
-    def __attrs_post_init__(self):
-        # 从account推导account_id
-        if self.account_id is None and self.account is not None and self.account.id is not None:
-            self.account_id = self.account.id
+    # def __attrs_post_init__(self):
+    #     # 从account推导account_id
+    #     if self.account_id is None and self.account is not None and self.account.id is not None:
+    #         self.account_id = self.account.id
 

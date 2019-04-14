@@ -6,9 +6,10 @@
 # wencan
 # 2019-04-13
 
+import abc
+
 import attr
 import flask
-import abc
 from flask.views import MethodView
 from werkzeug.exceptions import BadRequest
 

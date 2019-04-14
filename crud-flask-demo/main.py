@@ -6,19 +6,19 @@
 # wencan
 # 2019-04-12
 
-import attr
+import cmd.rest
+import random
 import typing
+from datetime import date, datetime, time, timedelta
+
+import attr
 import sqlalchemy
 import sqlalchemy.orm
-import random
-import string
-from datetime import datetime, date, time, timedelta
 from flask import Flask
 
-import model
 import crud
+import model
 import service
-import cmd.rest
 
 sql_types = {
     int: sqlalchemy.Integer,

@@ -6,7 +6,8 @@
 # 2019-04-14
 
 from .account import AccountAbstractCrud as AccountAbstractCrudA
-from .user import UserAbstractCrud, AccountAbstractCrud as AccountAbstractCrudU
+from .user import AccountAbstractCrud as AccountAbstractCrudU
+from .user import UserAbstractCrud
 
 __all__ = ("AccountAbstractCrud", "UserAbstractCrud")
 

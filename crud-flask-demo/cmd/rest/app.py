@@ -6,8 +6,10 @@
 # wencan
 # 2019-04-13
 
-from flask import Flask
 import typing
+
+from flask import Flask
+
 from . import views
 
 __all__ = ("register_apis")

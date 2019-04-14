@@ -12,7 +12,6 @@ from sqlalchemy.sql import expression
 import model
 from service.abcs import UserAbstractCrud
 
-
 __all__ = ("UserCrud")
 
 
