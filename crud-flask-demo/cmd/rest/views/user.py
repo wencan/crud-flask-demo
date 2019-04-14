@@ -8,15 +8,27 @@
 
 import attr
 import flask
+import abc
 from flask.views import MethodView
 from werkzeug.exceptions import BadRequest
 
-__all__ = ("UserAPI")
+import model
 
+__all__ = ("UserAbstractService", "UserAPI")
+
+
+class UserAbstractService(abc.ABC):
+    @abc.abstractmethod
+    def get_user(self, user_id) -> model.User:
+        '''获取指定用户，没找到错误待定义'''
+    
+    @abc.abstractmethod
+    def create_user(self, name: str="", phone: str="") -> model.User:
+        '''创建用户，并为新用户创建账户，返回携带账户的用户'''
 
 
 class UserAPI(MethodView):
-    def __init__(self, service):
+    def __init__(self, service: UserAbstractService):
         self._service = service
 
     def get(self, user_id: int):

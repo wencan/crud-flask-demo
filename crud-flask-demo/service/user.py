@@ -6,12 +6,34 @@
 # wencan
 # 2018-04-13
 
+import abc
+
 import model
+from cmd.rest.abcs import UserAbstractService
 
-__all__ = ("UserService")
+__all__ = ("UserAbstractCrud", "AccountAbstractCrud", "UserService")
 
-class UserService:
-    def __init__(self, user_crud, account_crud):
+
+class UserAbstractCrud(abc.ABC):
+    @abc.abstractmethod
+    def create_user(self, account_id: int, name: str = "", phone: str = ""):
+        '''创建并返回新账户'''
+
+    @abc.abstractmethod
+    def get_user(self, account_id) -> model.User:
+        '''获得指定用户，没找到返回None'''
+
+class AccountAbstractCrud(abc.ABC):
+    @abc.abstractmethod
+    def create_account(self, balance: float=0, score: float=0) ->model.Account:
+        '''创建并返回新账户'''
+
+    @abc.abstractmethod
+    def get_account(self, account_id: int) -> model.Account:
+        '''获得指定账户，没找到返回None'''
+
+class UserService(UserAbstractService):
+    def __init__(self, user_crud: UserAbstractCrud, account_crud: AccountAbstractCrud):
         self._user_crud = user_crud
         self._account_crud = account_crud
     

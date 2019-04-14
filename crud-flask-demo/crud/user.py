@@ -8,12 +8,15 @@
 
 from sqlalchemy.orm import sessionmaker as SessionMaker
 from sqlalchemy.sql import expression
+
 import model
+from service.abcs import UserAbstractCrud
+
 
 __all__ = ("UserCrud")
 
 
-class UserCrud:
+class UserCrud(UserAbstractCrud):
     def __init__(self, session_maker: SessionMaker):
         self._session_maker = session_maker
     

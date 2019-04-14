@@ -8,14 +8,16 @@
 
 from sqlalchemy.orm import sessionmaker as SessionMaker
 from sqlalchemy.sql import expression
+
 import model
+from service.abcs import AccountAbstractCrud
 
 __all__ = ("AccountCrud")
 
 sql_insert_empty_account = r'''INSERT INTO basic_account'''
 
 
-class AccountCrud:
+class AccountCrud(AccountAbstractCrud):
     def __init__(self, session_maker: SessionMaker):
         self._session_maker = session_maker
 
