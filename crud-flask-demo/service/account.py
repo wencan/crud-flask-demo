@@ -28,7 +28,7 @@ class AccountAbstractCrud(abc.ABC):
 
 
 class AccountService(AccountAbstractService):
-    def __init__(self, account_crud):
+    def __init__(self, account_crud: AccountAbstractCrud):
         self._account_crud = account_crud
     
     def get_account(self, account_id: int) -> model.Account:

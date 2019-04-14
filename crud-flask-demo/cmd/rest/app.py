@@ -11,11 +11,12 @@ import typing
 from flask import Flask
 
 from . import views
+from . import abcs
 
 __all__ = ("register_apis")
 
 
-def register_apis(app: Flask, user_service, account_service) -> typing.NoReturn:
+def register_apis(app: Flask, user_service: abcs.UserAbstractService, account_service: abcs.AccountAbstractService) -> typing.NoReturn:
     '''
     注册试图，关联url
     '''
