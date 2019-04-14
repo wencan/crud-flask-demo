@@ -14,8 +14,6 @@ from service.abcs import AccountAbstractCrud
 
 __all__ = ("AccountCrud")
 
-sql_insert_empty_account = r'''INSERT INTO basic_account'''
-
 
 class AccountCrud(AccountAbstractCrud):
     def __init__(self, session_maker: SessionMaker):
