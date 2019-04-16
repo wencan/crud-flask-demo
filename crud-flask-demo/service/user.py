@@ -7,9 +7,9 @@
 # 2018-04-13
 
 import abc
-from cmd.rest.abcs import UserAbstractService
+from ..cmd.rest.abcs import UserAbstractService
 
-import model
+from .. import model
 
 __all__ = ("UserAbstractCrud", "AccountAbstractCrud", "UserService")
 

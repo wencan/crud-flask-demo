@@ -9,8 +9,8 @@
 from sqlalchemy.orm import sessionmaker as SessionMaker
 from sqlalchemy.sql import expression
 
-import model
-from service.abcs import UserAbstractCrud
+from .. import model
+from ..service.abcs import UserAbstractCrud
 
 __all__ = ("UserCrud")
 

@@ -4,4 +4,6 @@
 from .user import User
 from .account import Account
 
-__all__ = ("User", "Account")
+__all__ = ("User", "Account", "all")
+
+all = (User, Account)

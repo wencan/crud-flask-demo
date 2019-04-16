@@ -13,7 +13,7 @@ import flask
 from flask.views import MethodView
 from werkzeug.exceptions import BadRequest
 
-import model
+from .... import model
 
 __all__ = ("AccountAPI")
 

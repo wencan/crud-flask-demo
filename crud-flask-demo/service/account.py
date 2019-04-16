@@ -3,8 +3,8 @@
 
 import abc
 
-import model
-from cmd.rest.abcs import AccountAbstractService
+from .. import model
+from .. cmd.rest.abcs import AccountAbstractService
 
 
 __all__ = ("AccountAbstractCrud", "AccountService")
