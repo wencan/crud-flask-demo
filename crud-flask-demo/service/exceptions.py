@@ -6,7 +6,7 @@
 # wencan
 # 2019-04-17
 
-from ..cmd.exception import CmdAbstractException
+from ..cmd.abc_exception import CmdAbstractException
 
 __all__ = ("NotFound")
 

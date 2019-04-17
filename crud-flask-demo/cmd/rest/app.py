@@ -12,7 +12,7 @@ from werkzeug import exceptions
 
 from . import views
 from . import abcs
-from ..exception import CmdAbstractException
+from ..abc_exception import CmdAbstractException
 
 __all__ = ("register_apis")
 
