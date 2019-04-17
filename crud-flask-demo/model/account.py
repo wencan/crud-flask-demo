@@ -9,7 +9,7 @@
 import attr
 from datetime import datetime
 
-__all__ = ("Account")
+__all__ = ("Account", )
 
 @attr.attrs(auto_attribs=True)
 class Account:

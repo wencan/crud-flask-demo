@@ -11,7 +11,7 @@ from datetime import datetime
 
 from .account import Account
 
-__all__ = ("User")
+__all__ = ("User", )
 
 
 @attr.attrs(auto_attribs=True)
