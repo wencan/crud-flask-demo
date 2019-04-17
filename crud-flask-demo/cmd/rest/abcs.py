@@ -5,7 +5,8 @@
 # wencan
 # 2019-04-14
 
+from .views.health import HealthAbstractService
 from .views.account import AccountAbstractService
 from .views.user import UserAbstractService
 
-__all__ = ("AccountAbstractService", "UserAbstractService")
+__all__ = ("HealthAbstractService", "AccountAbstractService", "UserAbstractService")

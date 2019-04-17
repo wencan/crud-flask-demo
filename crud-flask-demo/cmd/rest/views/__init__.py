@@ -3,8 +3,10 @@
 
 from .account import AccountAPI
 from .user import UserAPI
+from .health import HealthAPI
 
 __all__ = (
     "AccountAPI",
-    "UserAPI"
+    "UserAPI",
+    "HealthAPI"
 )

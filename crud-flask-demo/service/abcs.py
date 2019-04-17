@@ -6,10 +6,10 @@
 # 2019-04-14
 
 from .account import AccountAbstractCrud as AccountAbstractCrudA
-from .user import AccountAbstractCrud as AccountAbstractCrudU
-from .user import UserAbstractCrud
+from .user import AccountAbstractCrud as AccountAbstractCrudU, UserAbstractCrud
+from .health import HealthAbstractCrud
 
-__all__ = ("AccountAbstractCrud", "UserAbstractCrud")
+__all__ = ("AccountAbstractCrud", "UserAbstractCrud", "HealthAbstractCrud")
 
 class AccountAbstractCrud(AccountAbstractCrudA, AccountAbstractCrudU):
     pass

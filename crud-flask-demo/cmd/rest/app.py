@@ -16,10 +16,14 @@ from . import abcs
 __all__ = ("register_apis")
 
 
-def register_apis(app: Flask, user_service: abcs.UserAbstractService, account_service: abcs.AccountAbstractService) -> typing.NoReturn:
+def register_apis(app: Flask, health_service: abcs.HealthAbstractService, user_service: abcs.UserAbstractService, account_service: abcs.AccountAbstractService) -> typing.NoReturn:
     '''
     注册试图，关联url
     '''
+
+    # 健康检测
+    health_view = views.HealthAPI.as_view("health_api", health_service)
+    app.add_url_rule("/health", view_func=health_view, methods=("GET",))
 
     # 用户
     account_view = views.UserAPI.as_view("user_api", user_service)

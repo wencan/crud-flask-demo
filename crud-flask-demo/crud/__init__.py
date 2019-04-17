@@ -3,5 +3,6 @@
 
 from .account import AccountCrud
 from .user import UserCrud
+from .health import HealthCrud
 
-__all__ = ("AccountCrud", "UserCrud")
+__all__ = ("AccountCrud", "UserCrud", "HealthCrud")

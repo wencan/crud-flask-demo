@@ -21,13 +21,15 @@ def main():
     mydb = pool.MyDB("mysql+pymysql://root:abcd1234@127.0.0.1:3306/test", echo=True)
     session_maker = mydb.session_maker()
 
+    health_crud = crud.HealthCrud(session_maker)
     account_crud = crud.AccountCrud(session_maker)
     user_crud = crud.UserCrud(session_maker)
 
+    health_service = service.HealthService(health_crud)
     account_service = service.AccountService(account_crud)
     user_service = service.UserService(user_crud, account_crud)
 
     app = Flask("crud-flask-demo")
-    cmd_rest.register_apis(app, user_service, account_service)
+    cmd_rest.register_apis(app, health_service, user_service, account_service)
 
     app.run()
