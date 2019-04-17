@@ -8,8 +8,9 @@
 from .account import AccountAbstractCrud as AccountAbstractCrudA
 from .user import AccountAbstractCrud as AccountAbstractCrudU, UserAbstractCrud
 from .health import HealthAbstractCrud
+from .abc_exceptions import NoRowsAbstractException
 
-__all__ = ("AccountAbstractCrud", "UserAbstractCrud", "HealthAbstractCrud")
+__all__ = ("AccountAbstractCrud", "UserAbstractCrud", "HealthAbstractCrud", "NoRowsAbstractException")
 
 class AccountAbstractCrud(AccountAbstractCrudA, AccountAbstractCrudU):
     pass

@@ -11,6 +11,7 @@ from sqlalchemy.sql import expression
 
 from .. import model
 from ..service.abcs import AccountAbstractCrud
+from .exceptions import NoRows
 
 __all__ = ("AccountCrud")
 
@@ -32,42 +33,44 @@ class AccountCrud(AccountAbstractCrud):
 
             #查询新插入的对象
             account = session.query(model.Account).filter(model.Account.id==account_id).first()
+            if account is None:
+                raise NoRows()
             return account
         finally:
             session.close()
     
     def get_account(self, account_id: int) -> model.Account:
-        '''获得指定账户，没找到返回None'''
+        '''获得指定账户'''
 
         session = self._session_maker()
         try:
             account = session.query(model.Account).filter(model.Account.id==account_id).first()
+            if account is None:
+                raise NoRows()
             return account
         finally:
             session.close()
     
-    def add_balance(self, account_id: int, value: float) -> model.Account:
-        '''充值，返回账户'''
+    def add_balance(self, account_id: int, value: float):
+        '''充值'''
 
         session = self._session_maker()
         try:
-            session.query(model.Account).filter(model.Account.id==account_id).update({model.Account.balance: model.Account.balance+value})
+            rowcount = session.query(model.Account).filter(model.Account.id==account_id).update({model.Account.balance: model.Account.balance+value})
+            if rowcount is 0:
+                raise NoRows()
             session.commit()
-
-            account = session.query(model.Account).filter(model.Account.id==account_id).first()
-            return account
         finally:
             session.close()
     
-    def add_score(self, account_id: int, value: float) -> model.Account:
+    def add_score(self, account_id: int, value: float):
         '''加积分，返回账户'''
 
         session = self._session_maker()
         try:
-            session.query(model.Account).filter(model.Account.id==account_id).update({model.Account.score: model.Account.score+value})
+            rowcount = session.query(model.Account).filter(model.Account.id==account_id).update({model.Account.score: model.Account.score+value})
+            if rowcount is 0:
+                raise NoRows()
             session.commit()
-
-            account = session.query(model.Account).filter(model.Account.id==account_id).first()
-            return account
         finally:
             session.close()

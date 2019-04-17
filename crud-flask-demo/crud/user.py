@@ -11,6 +11,7 @@ from sqlalchemy.sql import expression
 
 from .. import model
 from ..service.abcs import UserAbstractCrud
+from .exceptions import NoRows
 
 __all__ = ("UserCrud")
 
@@ -19,7 +20,7 @@ class UserCrud(UserAbstractCrud):
     def __init__(self, session_maker: SessionMaker):
         self._session_maker = session_maker
     
-    def create_user(self, account_id: int, name: str = "", phone: str = ""):
+    def create_user(self, account_id: int, name: str = "", phone: str = "") -> model.User:
         '''创建并返回新账户'''
 
         session = self._session_maker()
@@ -31,8 +32,10 @@ class UserCrud(UserAbstractCrud):
             user_id = res.inserted_primary_key
 
             #查询新插入的对象
-            account = session.query(model.User).filter(model.User.id==user_id).first()
-            return account
+            user = session.query(model.User).filter(model.User.id==user_id).first()
+            if user is None:
+                raise NoRows()
+            return user
         finally:
             session.close()
     
@@ -42,6 +45,8 @@ class UserCrud(UserAbstractCrud):
         session = self._session_maker()
         try:
             user = session.query(model.User).filter(model.User.id==account_id).first()
+            if user is None:
+                raise NoRows()
             return user
         finally:
             session.close()

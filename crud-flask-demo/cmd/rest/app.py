@@ -7,11 +7,12 @@
 # 2019-04-13
 
 import typing
-
-from flask import Flask
+from flask import Flask, Response
+from werkzeug import exceptions
 
 from . import views
 from . import abcs
+from ..exception import CmdAbstractException
 
 __all__ = ("register_apis")
 
@@ -20,6 +21,9 @@ def register_apis(app: Flask, health_service: abcs.HealthAbstractService, user_s
     '''
     注册试图，关联url
     '''
+
+    # 服务器错误处理
+    app.register_error_handler(Exception, handle_exceptions)
 
     # 健康检测
     health_view = views.HealthAPI.as_view("health_api", health_service)
@@ -38,3 +42,30 @@ def register_apis(app: Flask, health_service: abcs.HealthAbstractService, user_s
     app.add_url_rule("/users/<int:user_id>/accounts/<int:account_id>", view_func=account_view, methods=("GET",))
     # 充值
     app.add_url_rule("/users/<int:user_id>/accounts/<int:account_id>/recharge", view_func=account_view, methods=("POST",))
+
+
+def handle_exceptions(e: Exception):
+    '''
+    错误处理
+    输出json错误，而非HTML
+    '''
+    status = 500
+    message = ""
+    description = ""
+
+    if isinstance(e, CmdAbstractException):
+        status = e.http_status
+        message = str(e)
+    elif isinstance(e, exceptions.HTTPException):
+        status = e.code
+        message = e.name
+        description = e.description
+    elif isinstance(e, LookupError):
+        status = 404
+        message = str(e)
+    else:
+        message = str(e)
+    
+    response = '''{{"message": "{}", "description": "{}"}}'''.format(message, description)
+
+    return Response(response, status=status, mimetype="application/json")

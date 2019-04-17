@@ -5,7 +5,8 @@ import abc
 
 from .. import model
 from .. cmd.rest.abcs import AccountAbstractService
-
+from .exceptions import NotFound
+from .abc_exceptions import NoRowsAbstractException
 
 __all__ = ("AccountAbstractCrud", "AccountService")
 
@@ -19,11 +20,11 @@ class AccountAbstractCrud(abc.ABC):
         '''获得指定账户，没找到返回None'''
 
     @abc.abstractmethod
-    def add_balance(self, account_id: int, value: float) -> model.Account:
+    def add_balance(self, account_id: int, value: float):
         '''充值，返回账户'''
 
     @abc.abstractmethod
-    def add_score(self, account_id: int, value: float) -> model.Account:
+    def add_score(self, account_id: int, value: float):
         '''加积分，返回账户'''
 
 
@@ -34,12 +35,23 @@ class AccountService(AccountAbstractService):
     def get_account(self, account_id: int) -> model.Account:
         '''获得指定账户，没找到错误待定义'''
 
-        return self._account_crud.get_account(account_id)
+        try:
+            account = self._account_crud.get_account(account_id)
+        except NoRowsAbstractException:
+            raise NotFound("not found account: {}".format(account_id))
+        
+        return account
     
     def recharge(self, account_id: int, value: float) -> model.Account:
         '''充值，并赠送等额积分，返回账户'''
 
-        # 后面需要补上事务
-        self._account_crud.add_balance(account_id, value)
-        account = self._account_crud.add_score(account_id, value)
+        try:
+            # 后面需要补上事务
+            self._account_crud.add_balance(account_id, value)
+            account = self._account_crud.add_score(account_id, value)
+
+            account = self._account_crud.get_account(account_id)
+        except NoRowsAbstractException:
+            raise NotFound("not found account: {}".format(account_id))
+
         return account

@@ -8,8 +8,9 @@
 
 import abc
 from ..cmd.rest.abcs import UserAbstractService
-
 from .. import model
+from .exceptions import NotFound
+from .abc_exceptions import NoRowsAbstractException
 
 __all__ = ("UserAbstractCrud", "AccountAbstractCrud", "UserService")
 
@@ -40,8 +41,15 @@ class UserService(UserAbstractService):
     def get_user(self, user_id) -> model.User:
         '''获取指定用户，没找到错误待定义'''
 
-        user = self._user_crud.get_user(user_id)
-        user.account = self._account_crud.get_account(user.account_id)
+        try:
+            user = self._user_crud.get_user(user_id)
+        except NoRowsAbstractException:
+            raise NotFound("not fount user: {}".format(user_id))
+        try:
+            user.account = self._account_crud.get_account(user.account_id)
+        except NoRowsAbstractException:
+            raise NotFound("not found account: {}".format(user_account_id))
+
         return user
     
     def create_user(self, name: str="", phone: str="") -> model.User:
