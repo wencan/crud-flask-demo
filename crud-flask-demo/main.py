@@ -24,12 +24,22 @@ def main():
     health_crud = crud.HealthCrud(session_maker)
     account_crud = crud.AccountCrud(session_maker)
     user_crud = crud.UserCrud(session_maker)
+    role_crud = crud.RoleCrud(session_maker)
+    user_role_crud = crud.UserRoleCrud(session_maker)
+    basic_authorization_crud = crud.BasicAuthorizationCrud(session_maker)
 
     health_service = service.HealthService(health_crud)
     account_service = service.AccountService(account_crud)
     user_service = service.UserService(user_crud, account_crud)
+    permission_service = service.PermissionService(basic_authorization_crud, role_crud, user_role_crud)
 
     app = Flask("crud-flask-demo")
-    cmd_rest.register_apis(app, health_service, user_service, account_service)
+    services = cmd_rest.Services(
+        permission_service= permission_service,
+        user_service= user_service, 
+        account_service= account_service,
+        health_service= health_service,
+    )
+    cmd_rest.register_apis(app, services)
 
     app.run()

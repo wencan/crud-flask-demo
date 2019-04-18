@@ -4,6 +4,15 @@
 from .account import AccountCrud
 from .user import UserCrud
 from .health import HealthCrud
+from .role import RoleCrud
+from .user_role import UserRoleCrud
+from .basic_authorization import BasicAuthorizationCrud
 from .exceptions import NoRows
 
-__all__ = ("AccountCrud", "UserCrud", "HealthCrud", "NoRows")
+__all__ = ("AccountCrud", 
+            "UserCrud", 
+            "HealthCrud", 
+            "RoleCrud", 
+            "UserRoleCrud", 
+            "BasicAuthorizationCrud", 
+            "NoRows")

@@ -8,6 +8,7 @@
 # 2019-04-18
 
 import attr
+import typing
 from datetime import datetime
 
 __all__ = ("Role", )
@@ -23,7 +24,7 @@ class Role:
     id: int = attr.attr(default=None, metadata={"sql": "id;primary_key"})
     name: str = attr.attr(default="", metadata={"sql": "role_name"})
     permissions: str = attr.attr(default="")
-    permission_list = attr.attr(default=[])
+    permission_list: typing.Iterable[str] = attr.attr(default=[], metadata={"sql": "-"})
     created_at: datetime = attr.attr(default=None)
     updated_at: datetime = attr.attr(default=None)
 
