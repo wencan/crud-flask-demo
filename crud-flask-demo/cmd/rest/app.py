@@ -16,7 +16,7 @@ from . import abcs
 from . import permission
 from ..abc_exception import CmdAbstractException
 
-__all__ = ("register_apis")
+__all__ = ("register_apis", "Services")
 
 
 @attr.attrs(auto_attribs=True)

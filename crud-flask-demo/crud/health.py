@@ -12,6 +12,7 @@ from sqlalchemy.sql import expression
 from .. import model
 from ..service.abcs import HealthAbstractCrud
 
+__all__ = ("HealthCrud", )
 
 class HealthCrud(HealthAbstractCrud):
     def __init__(self, session_maker: SessionMaker):

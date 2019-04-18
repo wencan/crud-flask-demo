@@ -15,7 +15,7 @@ from werkzeug.exceptions import BadRequest
 
 from .... import model
 
-__all__ = ("AccountAPI")
+__all__ = ("AccountAbstractService", "AccountAPI")
 
 
 class AccountAbstractService(abc.ABC):
