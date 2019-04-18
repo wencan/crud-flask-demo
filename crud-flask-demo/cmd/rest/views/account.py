@@ -14,8 +14,9 @@ from flask.views import MethodView
 from werkzeug.exceptions import BadRequest
 
 from .... import model
+from .. import permission
 
-__all__ = ("AccountAbstractService", "AccountAPI")
+__all__ = ("AccountAbstractService", "create_account_view")
 
 
 class AccountAbstractService(abc.ABC):
@@ -27,25 +28,42 @@ class AccountAbstractService(abc.ABC):
     def recharge(self, account_id: int, value: float) -> model.Account:
         '''充值，并赠送等额积分，返回账户'''
 
-class AccountAPI(MethodView):
-    def __init__(self, service: AccountAbstractService):
-        self._service = service
+def create_account_view(permission_service: permission.PermissionAbstractService, account_service: AccountAbstractService) -> MethodView:
+    '''创建账户api处理视图，包含权限控制'''
+    guard = permission.Guard(permission_service)
 
-    def get(self, user_id: int, account_id: int):
-        assert(account_id is not None)
+    class AccountHandlers:
+        def __init__(self, account_service: AccountAbstractService):
+            self._account_service = account_service
+        
+        @guard.permission_required("account:readable")
+        def get_account(self, account_id: int):
+            account = self._account_service.get_account(account_id)
+            return flask.jsonify(attr.asdict(account))
+        
+        @guard.permission_required("account:writable")
+        def recharge(self, account_id: int):
+            value = flask.request.form.get("value")
+            if value is None:
+                raise BadRequest("not value")
 
-        account = self._service.get_account(account_id)
-        return flask.jsonify(attr.asdict(account))
+            account = self._account_service.recharge(account_id, value=value)
+            return flask.jsonify(attr.asdict(account))
 
-    def post(self, user_id: int, account_id: int):
-        '''充值'''
 
-        assert(user_id)
-        assert(account_id)
+    class AccountAPI(MethodView):
+        def __init__(self, handlers: AccountHandlers):
+            self._handlers = handlers
 
-        value = flask.request.form.get("value")
-        if value is None:
-            raise BadRequest("not value")
+        def get(self, user_id: int, account_id: int):
+            return self._handlers.get_account(account_id)
 
-        account = self._service.recharge(account_id, value=value)
-        return flask.jsonify(attr.asdict(account))
+        def post(self, user_id: int, account_id: int):
+            '''目前仅支持充值'''
+
+            return self._handlers.recharge(account_id)
+
+    handlers = AccountHandlers(account_service)
+    view = AccountAPI.as_view("account_api", handlers)
+
+    return view

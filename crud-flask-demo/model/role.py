@@ -24,9 +24,10 @@ class Role:
     id: int = attr.attr(default=None, metadata={"sql": "id;primary_key"})
     name: str = attr.attr(default="", metadata={"sql": "role_name"})
     permissions: str = attr.attr(default="")
-    permission_list: typing.Iterable[str] = attr.attr(default=[], metadata={"sql": "-"})
+    # permission_list: typing.Iterable[str] = attr.attr(init=False, metadata={"sql": "-"})
     created_at: datetime = attr.attr(default=None)
     updated_at: datetime = attr.attr(default=None)
 
-    def __attrs_post_init__(self):
-        self.permission_list = self.permissions.split(";")
+    # 测试发现__attrs_post_init__未被执行
+    # def __attrs_post_init__(self):
+    #     self.permission_list = self.permissions.split(";")

@@ -48,7 +48,8 @@ def register_apis(app: Flask, services: Services) -> None:
     app.add_url_rule("/users", view_func=user_view, methods=("POST",))
 
     # 账户
-    account_view = views.AccountAPI.as_view("account_api", services.account_service)
+    # account_view = views.AccountAPI.as_view("account_api", services.account_service)
+    account_view = views.create_account_view(services.permission_service, services.account_service)
     # 获得指定账户
     app.add_url_rule("/users/<int:user_id>/accounts/<int:account_id>", view_func=account_view, methods=("GET",))
     # 充值
