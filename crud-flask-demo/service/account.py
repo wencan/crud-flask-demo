@@ -38,7 +38,7 @@ class AccountService(AccountAbstractService):
         try:
             account = self._account_crud.get_account(account_id)
         except NoRowsAbstractException:
-            raise NotFound("not found account: {}".format(account_id))
+            raise NotFound(f"not found account: {account_id}")
         
         return account
     
@@ -52,6 +52,6 @@ class AccountService(AccountAbstractService):
 
             account = self._account_crud.get_account(account_id)
         except NoRowsAbstractException:
-            raise NotFound("not found account: {}".format(account_id))
+            raise NotFound(f"not found account: {account_id}")
 
         return account

@@ -17,7 +17,7 @@ __all__ = ("UserAbstractCrud", "AccountAbstractCrud", "UserService")
 
 class UserAbstractCrud(abc.ABC):
     @abc.abstractmethod
-    def create_user(self, account_id: int, name: str = "", phone: str = ""):
+    def create_user(self, account_id: int, name: str = "", phone: str = "") -> model.User:
         '''创建并返回新账户'''
 
     @abc.abstractmethod
@@ -44,11 +44,11 @@ class UserService(UserAbstractService):
         try:
             user = self._user_crud.get_user(user_id)
         except NoRowsAbstractException:
-            raise NotFound("not fount user: {}".format(user_id))
+            raise NotFound(f"not fount user: {user_id}")
         try:
             user.account = self._account_crud.get_account(user.account_id)
         except NoRowsAbstractException:
-            raise NotFound("not found account: {}".format(user_account_id))
+            raise NotFound(f"not found account: {user.account_id}")
 
         return user
     

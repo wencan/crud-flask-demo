@@ -57,6 +57,7 @@ def handle_exceptions(e: Exception):
         status = e.http_status
         message = str(e)
     elif isinstance(e, exceptions.HTTPException):
+        e = exceptions.HTTPException(e)
         status = e.code
         message = e.name
         description = e.description
@@ -66,6 +67,6 @@ def handle_exceptions(e: Exception):
     else:
         message = str(e)
     
-    response = '''{{"message": "{}", "description": "{}"}}'''.format(message, description)
+    response = f'''{{"message": "{message}", "description": "{description}"}}'''
 
     return Response(response, status=status, mimetype="application/json")
