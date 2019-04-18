@@ -22,7 +22,7 @@ class User:
     __tablename__ = "basic_user"
 
     id: int = attr.attr(default=None, metadata={"sql": "id;primary_key"})
-    name: str = attr.attr(default="")
+    name: str = attr.attr(default="", metadata={"sql": "user_name"})
     phone: str = attr.attr(default="", metadata={"sql": "mobile"})
     account_id: int = attr.attr(default=None, metadata={"sql": "account_id", "json": "-"})
     account: Account = attr.attr(default=None, converter=lambda d: Account(**d), metadata={"sql": "-"})
