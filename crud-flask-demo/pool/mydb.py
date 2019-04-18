@@ -119,7 +119,7 @@ def map_to_table(cls, md: sqlalchemy.MetaData) -> typing.NoReturn:
     sqlalchemy.orm.mapper(cls, table)
 
 
-def map_models_to_tables(models: typing.List[typing.Any]) -> typing.NoReturn:
+def map_models_to_tables(models: typing.Iterable[typing.Any]) -> typing.NoReturn:
     '''映射全部数据模型到数据库表'''
 
     md = sqlalchemy.MetaData()
