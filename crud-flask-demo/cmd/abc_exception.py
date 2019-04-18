@@ -9,6 +9,6 @@ __all__ = ("CmdAbstractException", )
 
 class CmdAbstractException(Exception, abc.ABC):
     @property
-    @abc.abstractproperty
+    @abc.abstractmethod
     def http_status(self):
         '''HTTP状态码'''
