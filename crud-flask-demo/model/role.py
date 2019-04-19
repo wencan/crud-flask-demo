@@ -21,12 +21,12 @@ class Role:
     '''
     __tablename__ = "basic_role"
 
-    id: int = attr.attr(default=None, metadata={"sql": "id;primary_key"})
-    name: str = attr.attr(default="", metadata={"sql": "role_name"})
-    permissions: str = attr.attr(default="")
+    id: int = attr.attr(metadata={"sql": "id;primary_key"})
+    name: str = attr.attr(metadata={"sql": "role_name"})
+    permissions: str
     # permission_list: typing.Iterable[str] = attr.attr(init=False, metadata={"sql": "-"})
-    created_at: datetime = attr.attr(default=None)
-    updated_at: datetime = attr.attr(default=None)
+    created_at: datetime
+    updated_at: datetime
 
     # 测试发现__attrs_post_init__未被执行
     # def __attrs_post_init__(self):

@@ -18,9 +18,9 @@ class BasicAuthorization:
     '''
     __tablename__ = "basic_authorization"
 
-    id: int = attr.attr(default=None, metadata={"sql": "id;primary_key"})
-    user_id: int = attr.attr(default=None)
-    username: str = attr.attr(default=0)
-    password: str = attr.attr(default=0)
-    created_at: datetime = attr.attr(default=None)
-    updated_at: datetime = attr.attr(default=None)
+    id: int = attr.attr(metadata={"sql": "id;primary_key"})
+    user_id: int
+    username: str
+    password: str
+    created_at: datetime
+    updated_at: datetime

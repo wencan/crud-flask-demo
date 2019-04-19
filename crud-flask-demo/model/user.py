@@ -21,13 +21,13 @@ class User:
     '''
     __tablename__ = "basic_user"
 
-    id: int = attr.attr(default=None, metadata={"sql": "id;primary_key"})
-    name: str = attr.attr(default="", metadata={"sql": "user_name"})
-    phone: str = attr.attr(default="", metadata={"sql": "mobile"})
-    account_id: int = attr.attr(default=None, metadata={"sql": "account_id", "json": "-"})
-    account: Account = attr.attr(default=None, converter=lambda d: Account(**d), metadata={"sql": "-"})
-    created_at: datetime = attr.attr(default=None)
-    updated_at: datetime = attr.attr(default=None)
+    id: int = attr.attr(metadata={"sql": "id;primary_key"})
+    name: str = attr.attr(metadata={"sql": "user_name"})
+    phone: str = attr.attr(metadata={"sql": "mobile"})
+    account_id: int = attr.attr(metadata={"sql": "account_id", "json": "-"})
+    account: Account = attr.attr(converter=lambda d: Account(**d), metadata={"sql": "-"})
+    created_at: datetime
+    updated_at: datetime
 
     # def __attrs_post_init__(self):
     #     # 从account推导account_id

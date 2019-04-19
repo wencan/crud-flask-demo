@@ -20,8 +20,8 @@ class UserRole:
     '''
     __tablename__ = "basic_user_role"
 
-    id: int = attr.attr(default=None, metadata={"sql": "id;primary_key"})
-    user_id: int = attr.attr(default=None)
-    role_id: int = attr.attr(default=None)
-    created_at: datetime = attr.attr(default=None)
-    updated_at: datetime = attr.attr(default=None)
+    id: int = attr.attr(metadata={"sql": "id;primary_key"})
+    user_id: int
+    role_id: int
+    created_at: datetime
+    updated_at: datetime
