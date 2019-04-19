@@ -25,7 +25,7 @@ class MyDB:
         self._kwargs = kwargs
         self._connected = False
     
-    def _connect(self) -> typing.NoReturn:
+    def _connect(self) -> None:
         '''
         连接到数据库
         需要时再连接，会影响fork
@@ -77,7 +77,7 @@ _sql_types = {
 }
 
 
-def map_to_table(cls, md: sqlalchemy.MetaData) -> typing.NoReturn:
+def map_to_table(cls, md: sqlalchemy.MetaData) -> None:
     '''将通用模型映射为SQL表'''
 
     # 生成表字段列表
@@ -119,7 +119,7 @@ def map_to_table(cls, md: sqlalchemy.MetaData) -> typing.NoReturn:
     sqlalchemy.orm.mapper(cls, table)
 
 
-def map_models_to_tables(models: typing.Iterable[typing.Any]) -> typing.NoReturn:
+def map_models_to_tables(models: typing.Iterable[typing.Any]) -> None:
     '''映射全部数据模型到数据库表'''
 
     md = sqlalchemy.MetaData()
