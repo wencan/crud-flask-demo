@@ -42,7 +42,6 @@ def create_user_view(permission_service: permission.PermissionAbstractService, u
             user = self._user_service.get_user(user_id)
             return flask.jsonify(attr.asdict(user))
 
-        @guard.authorization_required
         def create_user(self):
             name = flask.request.form.get("name", "")
             phone = flask.request.form.get("phone", "")
