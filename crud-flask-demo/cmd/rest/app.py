@@ -8,6 +8,8 @@
 
 import attr
 import typing
+import logging
+
 from flask import Flask, Response
 from werkzeug import exceptions
 
@@ -17,6 +19,8 @@ from . import permission
 from ..abc_exception import CmdAbstractException
 
 __all__ = ("register_apis", "Services")
+
+log = logging.getLogger(__name__)
 
 
 @attr.attrs(auto_attribs=True)
@@ -61,21 +65,24 @@ def handle_exceptions(e: Exception):
     错误处理
     输出json错误，而非HTML
     '''
+
     status = 500
     message = ""
     description = ""
 
     if isinstance(e, CmdAbstractException):
+        # 自己主动抛出的异常，不再重复输出
         status = e.http_status
         message = str(e)
     elif isinstance(e, exceptions.HTTPException):
+        log.exception(e)
+
         status = e.code
         message = e.name
         description = e.description
-    elif isinstance(e, LookupError):
-        status = 404
-        message = str(e)
     else:
+        log.exception(e)
+
         message = str(e)
     
     response = f'''{{"message": "{message}", "description": "{description}"}}'''

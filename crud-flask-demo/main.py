@@ -6,6 +6,8 @@
 # wencan
 # 2019-04-12
 
+import logging
+
 import sqlalchemy
 from flask import Flask
 
@@ -17,6 +19,8 @@ from .cmd import rest as cmd_rest
 
 
 def main():
+    logging.basicConfig(format="%(asctime)s %(levelname)s %(name)s %(message)s")
+
     pool.map_models_to_tables(model.all_table_models)
     mydb = pool.MyDB("mysql+pymysql://root:abcd1234@127.0.0.1:3306/test", echo=True)
     session_maker = mydb.session_maker()
