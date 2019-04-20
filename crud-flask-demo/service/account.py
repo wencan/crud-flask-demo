@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import abc
+import typing
 
 from .. import model
 from .. cmd.rest.abcs import AccountAbstractService
@@ -29,8 +30,9 @@ class AccountAbstractCrud(abc.ABC):
 
 
 class AccountService(AccountAbstractService):
-    def __init__(self, account_crud: AccountAbstractCrud):
+    def __init__(self, account_crud: AccountAbstractCrud, scoped_session_maker: typing.Callable[..., typing.ContextManager]):
         self._account_crud = account_crud
+        self._scoped_session_maker = scoped_session_maker
     
     def get_account(self, account_id: int) -> model.Account:
         '''获得指定账户，没找到错误待定义'''
@@ -46,9 +48,9 @@ class AccountService(AccountAbstractService):
         '''充值，并赠送等额积分，返回账户'''
 
         try:
-            # 后面需要补上事务
-            self._account_crud.add_balance(account_id, value)
-            account = self._account_crud.add_score(account_id, value)
+            with self._scoped_session_maker(subtransactions_supported=True):
+                self._account_crud.add_balance(account_id, value)
+                account = self._account_crud.add_score(account_id, value)
 
             account = self._account_crud.get_account(account_id)
         except NoRowsAbstractException:

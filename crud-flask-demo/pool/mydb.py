@@ -35,31 +35,31 @@ class MyDB:
             return
 
         self._engine = sqlalchemy.create_engine(*self._args, **self._kwargs)
-        self._seesion_maker = sqlalchemy.orm.sessionmaker(bind=self._engine)
         self._connected = True
 
         def ping():
-            self.server_now()
+            session_maker = sqlalchemy.orm.sessionmaker(bind=self._engine)
+            session = session_maker()
+            try:
+                result = session.execute("SELECT NOW()")
+                result.fetchone()
+
+                session.commit()
+            finally:
+                session.close()
+
             print("mysql connected!")
 
         # 来一次ping操作
         thread = Thread(target=ping, daemon=True)
         thread.start()
-    
-    def server_now(self) -> datetime:
-        session = self._seesion_maker()
-        try:
-            result = session.execute("SELECT NOW()")
-            return result.fetchone()
-        finally:
-            session.close()
 
-    def session_maker(self, *args, **kwargs) -> sqlalchemy.orm.sessionmaker:
+    def session_maker(self, expire_on_commit: bool=False) -> sqlalchemy.orm.sessionmaker:
         '''返回sessionmake'''
 
         self._connect()
 
-        return self._seesion_maker
+        return sqlalchemy.orm.sessionmaker(bind=self._engine, expire_on_commit=expire_on_commit)
 
 # 标准基础类型到sqlalchemy类型的映射
 _sql_types = {

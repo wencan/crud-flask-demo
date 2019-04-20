@@ -16,6 +16,6 @@ __all__ = ("Health", )
 class Health:
     '''健康状况'''
 
-    server_time: datetime
-
     mysql_time: datetime
+
+    server_time: datetime = attr.attr(factory=datetime.now)

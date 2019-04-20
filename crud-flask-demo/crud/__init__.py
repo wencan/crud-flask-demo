@@ -8,6 +8,7 @@ from .role import RoleCrud
 from .user_role import UserRoleCrud
 from .basic_authorization import BasicAuthorizationCrud
 from .exceptions import NoRows
+from .utils import scoped_session_maker
 
 __all__ = ("AccountCrud", 
             "UserCrud", 
@@ -15,4 +16,5 @@ __all__ = ("AccountCrud",
             "RoleCrud", 
             "UserRoleCrud", 
             "BasicAuthorizationCrud", 
-            "NoRows")
+            "NoRows"
+            "scoped_session_maker")

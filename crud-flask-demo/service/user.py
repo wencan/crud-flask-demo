@@ -7,6 +7,8 @@
 # 2018-04-13
 
 import abc
+import typing
+
 from ..cmd.rest.abcs import UserAbstractService
 from .. import model
 from .exceptions import NotFound
@@ -34,9 +36,10 @@ class AccountAbstractCrud(abc.ABC):
         '''获得指定账户，没找到返回None'''
 
 class UserService(UserAbstractService):
-    def __init__(self, user_crud: UserAbstractCrud, account_crud: AccountAbstractCrud):
+    def __init__(self, user_crud: UserAbstractCrud, account_crud: AccountAbstractCrud, scoped_session_maker: typing.Callable[..., typing.ContextManager]):
         self._user_crud = user_crud
         self._account_crud = account_crud
+        self._scoped_session_maker = scoped_session_maker
     
     def get_user(self, user_id) -> model.User:
         '''获取指定用户，没找到错误待定义'''
@@ -55,9 +58,9 @@ class UserService(UserAbstractService):
     def create_user(self, name: str="", phone: str="") -> model.User:
         '''创建用户，并为新用户创建账户，返回携带账户的用户'''
 
-        # 后面需要补上事务
-        account = self._account_crud.create_account()
-        user = self._user_crud.create_user(name=name, phone=phone, account_id = account.id)
-        user.account = account
+        with self._scoped_session_maker(subtransactions_supported=True):
+            account = self._account_crud.create_account()
+            user = self._user_crud.create_user(name=name, phone=phone, account_id = account.id)
+            user.account = account
 
         return user

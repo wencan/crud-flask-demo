@@ -14,6 +14,7 @@ from flask import Flask
 from . import model
 from . import pool
 from . import crud
+from .crud import scoped_session_maker as ScopedSessionMaker
 from . import service
 from .cmd import rest as cmd_rest
 
@@ -25,16 +26,18 @@ def main():
     mydb = pool.MyDB("mysql+pymysql://root:abcd1234@127.0.0.1:3306/test", echo=True)
     session_maker = mydb.session_maker()
 
-    health_crud = crud.HealthCrud(session_maker)
-    account_crud = crud.AccountCrud(session_maker)
-    user_crud = crud.UserCrud(session_maker)
-    role_crud = crud.RoleCrud(session_maker)
-    user_role_crud = crud.UserRoleCrud(session_maker)
-    basic_authorization_crud = crud.BasicAuthorizationCrud(session_maker)
+    scoped_session_maker = ScopedSessionMaker(session_factory=session_maker)
+    health_crud = crud.HealthCrud(scoped_session_maker)
+    account_crud = crud.AccountCrud(scoped_session_maker)
+    user_crud = crud.UserCrud(scoped_session_maker)
+    role_crud = crud.RoleCrud(scoped_session_maker)
+    user_role_crud = crud.UserRoleCrud(scoped_session_maker)
+    basic_authorization_crud = crud.BasicAuthorizationCrud(scoped_session_maker)
 
+    # scoped_session_maker = ScopedSessionMaker(session_factory=session_maker, subtransactions_supported=True)
     health_service = service.HealthService(health_crud)
-    account_service = service.AccountService(account_crud)
-    user_service = service.UserService(user_crud, account_crud)
+    account_service = service.AccountService(account_crud, scoped_session_maker= scoped_session_maker)
+    user_service = service.UserService(user_crud, account_crud, scoped_session_maker= scoped_session_maker)
     permission_service = service.PermissionService(basic_authorization_crud, role_crud, user_role_crud)
 
     app = Flask("crud-flask-demo")

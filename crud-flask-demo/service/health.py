@@ -6,7 +6,6 @@
 # 2018-04-17
 
 import abc
-import attr
 
 from .. import model
 from ..cmd.rest.abcs import HealthAbstractService
