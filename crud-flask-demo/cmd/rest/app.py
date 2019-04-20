@@ -11,6 +11,7 @@ import typing
 import logging
 
 from flask import Flask, Response
+from flask.logging import default_handler as flask_default_logging_handler
 from werkzeug import exceptions
 
 from . import views
@@ -18,7 +19,7 @@ from . import abcs
 from . import permission
 from ..abc_exception import CmdAbstractException
 
-__all__ = ("register_apis", "Services")
+__all__ = ("run_restful_app", "Services")
 
 log = logging.getLogger(__name__)
 
@@ -31,10 +32,12 @@ class Services:
     health_service: abcs.HealthAbstractService
 
 
-def register_apis(app: Flask, services: Services) -> None:
+def run_restful_app(name: str, services: Services, host: str=None, port: int=None, debug: bool=False) -> None:
     '''
-    注册试图，关联url
+    创建app，配置，然后运行
     '''
+    app = Flask(name)
+    app.logger.removeHandler(flask_default_logging_handler)
 
     # 服务器错误处理
     app.register_error_handler(Exception, handle_exceptions)
@@ -58,6 +61,9 @@ def register_apis(app: Flask, services: Services) -> None:
     app.add_url_rule("/users/<int:user_id>/accounts/<int:account_id>", view_func=account_view, methods=("GET",))
     # 充值
     app.add_url_rule("/users/<int:user_id>/accounts/<int:account_id>/recharge", view_func=account_view, methods=("POST",))
+
+    # run
+    app.run(host=host, port=port, debug=debug)
 
 
 def handle_exceptions(e: Exception):

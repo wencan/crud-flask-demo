@@ -8,9 +8,6 @@
 
 import logging
 
-import sqlalchemy
-from flask import Flask
-
 from . import model
 from . import pool
 from . import crud
@@ -40,13 +37,10 @@ def main():
     user_service = service.UserService(user_crud, account_crud, scoped_session_maker= scoped_session_maker)
     permission_service = service.PermissionService(basic_authorization_crud, role_crud, user_role_crud)
 
-    app = Flask("crud-flask-demo")
     services = cmd_rest.Services(
         permission_service= permission_service,
         user_service= user_service, 
         account_service= account_service,
         health_service= health_service,
     )
-    cmd_rest.register_apis(app, services)
-
-    app.run()
+    cmd_rest.run_restful_app("crud-app_demo", services)
