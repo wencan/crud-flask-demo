@@ -65,7 +65,6 @@ class TestAccountService(unittest.TestCase):
         with self.assertRaises(RuntimeError) as cm:
             self._service.get_account(-1)
         the_exception = cm.exception
-        print(the_exception)
         self.assertEqual(the_exception.args, ("I am a exception",))
     
     def test_recharge(self):

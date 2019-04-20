@@ -17,13 +17,21 @@ from .cmd import rest as cmd_rest
 
 
 def main():
-    logging.basicConfig(format="%(asctime)s %(levelname)s %(name)s %(message)s")
+    # logging.basicConfig(format="%(asctime)s %(levelname)s %(name)s %(message)s", level=logging.DEBUG)
+    # 配置本程序输出的日志
+    # 依赖程序输出的日志不受影响
+    handler = logging.StreamHandler()
+    handler.setFormatter(logging.Formatter(fmt="%(asctime)s %(levelname)s %(name)s %(message)s"))
+    logger = logging.getLogger(__name__.split(".")[0])
+    logger.setLevel(logging.DEBUG)
+    logger.addHandler(handler)
 
     pool.map_models_to_tables(model.all_table_models)
-    mydb = pool.MyDB("mysql+pymysql://root:abcd1234@127.0.0.1:3306/test", echo=True)
+    mydb = pool.MyDB("mysql+pymysql://root:abcd1234@127.0.0.1:3306/test", echo="debug", echo_pool="debug")
     session_maker = mydb.session_maker()
 
     scoped_session_maker = ScopedSessionMaker(session_factory=session_maker)
+
     health_crud = crud.HealthCrud(scoped_session_maker)
     account_crud = crud.AccountCrud(scoped_session_maker)
     user_crud = crud.UserCrud(scoped_session_maker)
@@ -31,7 +39,6 @@ def main():
     user_role_crud = crud.UserRoleCrud(scoped_session_maker)
     basic_authorization_crud = crud.BasicAuthorizationCrud(scoped_session_maker)
 
-    # scoped_session_maker = ScopedSessionMaker(session_factory=session_maker, subtransactions_supported=True)
     health_service = service.HealthService(health_crud)
     account_service = service.AccountService(account_crud, scoped_session_maker= scoped_session_maker)
     user_service = service.UserService(user_crud, account_crud, scoped_session_maker= scoped_session_maker)
@@ -43,4 +50,5 @@ def main():
         account_service= account_service,
         health_service= health_service,
     )
-    cmd_rest.run_restful_app("crud-app_demo", services)
+
+    cmd_rest.run_restful_app("crud-app-demo", services)

@@ -10,14 +10,17 @@
 
 import attr
 import typing
-import sqlalchemy
-import sqlalchemy.orm
 from contextlib import contextmanager
 from datetime import date, datetime, time, timedelta
 from threading import Thread
+import logging
+
+import sqlalchemy
+import sqlalchemy.orm
 
 __all__ = ("MyDB", "map_models_to_tables")
 
+log = logging.getLogger(__name__)
 
 class MyDB:
     def __init__(self, *args, **kwargs):
@@ -48,11 +51,12 @@ class MyDB:
             finally:
                 session.close()
 
-            print("mysql connected!")
+            log.info("mysql connected!")
 
         # 来一次ping操作
-        thread = Thread(target=ping, daemon=True)
-        thread.start()
+        # thread = Thread(target=ping, daemon=True)
+        # thread.start()
+        ping()
 
     def session_maker(self, expire_on_commit: bool=False) -> sqlalchemy.orm.sessionmaker:
         '''返回sessionmake'''
