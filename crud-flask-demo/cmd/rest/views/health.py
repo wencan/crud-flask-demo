@@ -11,18 +11,9 @@ import flask
 from flask.views import MethodView
 
 from .... import model
+from ...abcs import HealthAbstractService
 
-__all__ = ("HealthAbstractService", "HealthView", "HealthHandlers")
-
-class HealthAbstractService(abc.ABC):
-    '''健康检测服务抽象基类'''
-
-    @abc.abstractmethod
-    def get_health(self) -> model.Health:
-        '''
-        返回健康状态。
-        包含本地时间、上游服务健康状况
-        '''
+__all__ = ("HealthView", "HealthHandlers")
 
 
 class HealthHandlers:

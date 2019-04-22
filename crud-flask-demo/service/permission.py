@@ -10,7 +10,7 @@ import typing
 from itertools import chain
 
 from .. import model
-from ..cmd.abc_permission import PermissionAbstractService
+from ..cmd.abcs import PermissionAbstractService
 from .abc_exceptions import NoRowsAbstractException
 
 __all__ = ("BasicAuthorizationAbstractCrud", "RoleAbstractCrud", "UserRoleAbstractCrud", "PermissionService")

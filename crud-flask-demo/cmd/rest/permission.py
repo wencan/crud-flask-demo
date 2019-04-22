@@ -11,8 +11,7 @@ from functools import wraps
 from flask import request
 from werkzeug import exceptions
 
-from ..abc_permission import PermissionAbstractService
-
+from ..abcs import PermissionAbstractService
 
 __all__ = ("Guard", )
 

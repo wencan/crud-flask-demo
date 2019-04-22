@@ -15,9 +15,8 @@ from flask.logging import default_handler as flask_default_logging_handler
 from werkzeug import exceptions
 
 from . import views
-from . import abcs
+from .. import abcs
 from . import permission
-from ..abc_exception import CmdAbstractException
 
 __all__ = ("run_restful_app", "Services")
 
@@ -77,7 +76,7 @@ def handle_exceptions(e: Exception):
     message = ""
     description = ""
 
-    if isinstance(e, CmdAbstractException):
+    if isinstance(e, abcs.CmdAbstractException):
         # 自己主动抛出的异常，不再重复输出
         status = e.http_status
         message = str(e)

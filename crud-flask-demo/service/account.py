@@ -5,7 +5,7 @@ import abc
 import typing
 
 from .. import model
-from .. cmd.rest.abcs import AccountAbstractService
+from .. cmd.abcs import AccountAbstractService
 from .exceptions import NotFound
 from .abc_exceptions import NoRowsAbstractException
 

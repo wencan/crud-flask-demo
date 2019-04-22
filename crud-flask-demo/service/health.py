@@ -8,7 +8,7 @@
 import abc
 
 from .. import model
-from ..cmd.rest.abcs import HealthAbstractService
+from ..cmd.abcs import HealthAbstractService
 
 __all__ = ("HealthAbstractCrud", "HealthService")
 

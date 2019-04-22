@@ -15,20 +15,10 @@ from werkzeug.exceptions import BadRequest, NotImplemented
 
 from .... import model
 from .. import permission
+from ...abcs import UserAbstractService
 
-__all__ = ("UserAbstractService", "UserHandlers", "UserView")
 
-
-class UserAbstractService(abc.ABC):
-    '''用户服务抽象基类'''
-
-    @abc.abstractmethod
-    def get_user(self, user_id) -> model.User:
-        '''获取指定用户，没找到错误待定义'''
-    
-    @abc.abstractmethod
-    def create_user(self, name: str="", phone: str="") -> model.User:
-        '''创建用户，并为新用户创建账户，返回携带账户的用户'''
+__all__ = ("UserHandlers", "UserView")
 
 
 class UserHandlers:

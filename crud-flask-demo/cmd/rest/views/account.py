@@ -15,20 +15,10 @@ from werkzeug.exceptions import BadRequest
 
 from .... import model
 from .. import permission
+from ...abcs import AccountAbstractService
 
-__all__ = ("AccountAbstractService", "AccountView", "AccountHandlers")
+__all__ = ("AccountView", "AccountHandlers")
 
-
-class AccountAbstractService(abc.ABC):
-    '''账户服务抽象基类'''
-
-    @abc.abstractmethod
-    def get_account(self, account_id: int) -> model.Account:
-        '''获得指定账户，没找到错误待定义'''
-
-    @abc.abstractmethod
-    def recharge(self, account_id: int, value: float) -> model.Account:
-        '''充值，并赠送等额积分，返回账户'''
 
 class AccountHandlers:
     '''账户接口处理'''

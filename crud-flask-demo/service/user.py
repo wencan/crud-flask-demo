@@ -9,7 +9,7 @@
 import abc
 import typing
 
-from ..cmd.rest.abcs import UserAbstractService
+from ..cmd.abcs import UserAbstractService
 from .. import model
 from .exceptions import NotFound
 from .abc_exceptions import NoRowsAbstractException
