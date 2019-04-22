@@ -43,20 +43,21 @@ def run_restful_app(name: str, services: Services, host: str=None, port: int=Non
     app.register_error_handler(Exception, handle_exceptions)
 
     # 健康检测
-    health_view = views.HealthAPI.as_view("health_api", services.health_service)
+    health_handlers = views.HealthHandlers(services.health_service)
+    health_view = views.HealthView.as_view("health_api", health_handlers)
     app.add_url_rule("/health", view_func=health_view, methods=("GET",))
 
     # 用户
-    # user_view = views.UserAPI.as_view("user_api", services.user_service)
-    user_view = views.create_user_view(services.permission_service, services.user_service)
+    user_handlers = views.UserHandlers(services.permission_service, services.user_service)
+    user_view = views.UserView.as_view("user_api", user_handlers)
     # 获得指定用户
     app.add_url_rule("/users/<int:user_id>", view_func=user_view, methods=("GET",))
     # 创建用户
     app.add_url_rule("/users", view_func=user_view, methods=("POST",))
 
     # 账户
-    # account_view = views.AccountAPI.as_view("account_api", services.account_service)
-    account_view = views.create_account_view(services.permission_service, services.account_service)
+    account_handlers = views.AccountHandlers(services.permission_service, services.account_service)
+    account_view = views.AccountView.as_view("account_api", account_handlers)
     # 获得指定账户
     app.add_url_rule("/users/<int:user_id>/accounts/<int:account_id>", view_func=account_view, methods=("GET",))
     # 充值
