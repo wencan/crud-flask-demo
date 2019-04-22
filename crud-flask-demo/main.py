@@ -8,6 +8,8 @@
 
 import logging
 
+import pymysql
+
 from . import model
 from . import pool
 from . import crud
