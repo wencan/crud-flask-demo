@@ -8,7 +8,7 @@
 
 from ..cmd.abcs import CmdAbstractException
 
-__all__ = ("NotFound")
+__all__ = ("NotFound", )
 
 class NotFound(CmdAbstractException):
     '''没找到'''

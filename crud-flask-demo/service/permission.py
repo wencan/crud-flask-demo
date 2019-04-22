@@ -11,26 +11,9 @@ from itertools import chain
 
 from .. import model
 from ..cmd.abcs import PermissionAbstractService
-from .abc_exceptions import NoRowsAbstractException
+from .abcs import RoleAbstractCrud, UserRoleAbstractCrud, BasicAuthorizationAbstractCrud, NoRowsAbstractException
 
-__all__ = ("BasicAuthorizationAbstractCrud", "RoleAbstractCrud", "UserRoleAbstractCrud", "PermissionService")
-
-
-class BasicAuthorizationAbstractCrud(abc.ABC):
-    @abc.abstractmethod
-    def verify_username_password(self, username: str, password: str) -> int:
-        '''验证用户名和密码，成功返回用户id，否则抛出NoRows'''
-
-class RoleAbstractCrud(abc.ABC):
-    @abc.abstractmethod
-    def get_role(self, role_id: int) -> model.Role:
-        '''获得指定角色信息（含权限信息）'''
-
-
-class UserRoleAbstractCrud(abc.ABC):
-    @abc.abstractmethod
-    def get_roles_by_user(self, user_id: int) -> typing.Iterable[int]:
-        '''获得关联到指定用户的角色。即使没关联到角色也返回空序列'''
+__all__ = ("PermissionService", )
 
 
 class PermissionService(PermissionAbstractService):

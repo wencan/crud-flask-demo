@@ -9,15 +9,9 @@ import abc
 
 from .. import model
 from ..cmd.abcs import HealthAbstractService
+from .abcs import HealthAbstractCrud
 
-__all__ = ("HealthAbstractCrud", "HealthService")
-
-class HealthAbstractCrud(abc.ABC):
-    '''数据库的健康检测'''
-
-    @abc.abstractmethod
-    def get_health(self) -> model.Health:
-        '''返回各个数据库的时间信息'''
+__all__ = ("HealthService", )
 
 class HealthService(HealthAbstractService):
     '''健康检测'''

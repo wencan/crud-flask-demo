@@ -12,28 +12,10 @@ import typing
 from ..cmd.abcs import UserAbstractService
 from .. import model
 from .exceptions import NotFound
-from .abc_exceptions import NoRowsAbstractException
+from .abcs import UserAbstractCrud, UserRequiredAccountAbstractCrud as AccountAbstractCrud, NoRowsAbstractException
 
-__all__ = ("UserAbstractCrud", "AccountAbstractCrud", "UserService")
+__all__ = ("UserService", )
 
-
-class UserAbstractCrud(abc.ABC):
-    @abc.abstractmethod
-    def create_user(self, account_id: int, name: str = "", phone: str = "") -> model.User:
-        '''创建并返回新账户'''
-
-    @abc.abstractmethod
-    def get_user(self, account_id) -> model.User:
-        '''获得指定用户，没找到返回None'''
-
-class AccountAbstractCrud(abc.ABC):
-    @abc.abstractmethod
-    def create_account(self, balance: float=0, score: float=0) ->model.Account:
-        '''创建并返回新账户'''
-
-    @abc.abstractmethod
-    def get_account(self, account_id: int) -> model.Account:
-        '''获得指定账户，没找到返回None'''
 
 class UserService(UserAbstractService):
     def __init__(self, user_crud: UserAbstractCrud, account_crud: AccountAbstractCrud, scoped_session_maker: typing.Callable[..., typing.ContextManager]):
