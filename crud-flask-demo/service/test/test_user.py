@@ -24,8 +24,8 @@ __all__ = ("TestUserService", )
 
 class TestUserService(unittest.TestCase):
     #  测试用数据
-    _accounts: typing.MutableMapping[int, model.Account] = dict({1: model.Account(id=1, balance=0, score=0, created_at=datetime.now(), updated_at=datetime.now())})
-    _users: typing.MutableMapping[int, model.User] = dict({1: model.User(id=1, name="", phone="", account_id=1, account=_accounts[1], created_at=datetime.now(), updated_at=datetime.now())})
+    _accounts: typing.MutableMapping[int, model.Account] = dict({1: model.Account(id=1, balance=0, score=0)})
+    _users: typing.MutableMapping[int, model.User] = dict({1: model.User(id=1, name="", phone="", account_id=1, account=_accounts[1])})
 
     def setUp(self):
         # # 开始mock

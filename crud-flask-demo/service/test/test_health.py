@@ -38,6 +38,9 @@ class TestHealthService(unittest.TestCase):
         # 基于mock对象创建测试对象
         self._service = health.HealthService(mockHealthCrud)
     
+    def tearDown(self):
+        mock.patch.stopall()
+    
     def test_get_health(self) -> model.Health:
         # 成功
         h = self._service.get_health()
@@ -50,9 +53,6 @@ class TestHealthService(unittest.TestCase):
         with self.assertRaises(ValueError):
             datetime.strptime(h.mysql_time, "%Y-%m-%d %H:%M:%S.%f")
     
-    def tearDown(self):
-        mock.patch.stopall()
-
 
 if __name__ == "__main__":
     unittest.main()

@@ -23,5 +23,5 @@ class UserRole:
     id: int = attr.attr(metadata={"sql": "id;primary_key"})
     user_id: int
     role_id: int
-    created_at: datetime
-    updated_at: datetime
+    created_at: datetime = attr.attr(factory=datetime.now)
+    updated_at: datetime = attr.attr(factory=datetime.now)

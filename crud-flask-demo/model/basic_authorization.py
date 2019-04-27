@@ -22,5 +22,5 @@ class BasicAuthorization:
     user_id: int
     username: str
     password: str
-    created_at: datetime
-    updated_at: datetime
+    created_at: datetime = attr.attr(factory=datetime.now)
+    updated_at: datetime = attr.attr(factory=datetime.now)

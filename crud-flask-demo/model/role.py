@@ -25,8 +25,8 @@ class Role:
     name: str = attr.attr(metadata={"sql": "role_name"})
     permissions: str
     # permission_list: typing.Iterable[str] = attr.attr(init=False, metadata={"sql": "-"})
-    created_at: datetime
-    updated_at: datetime
+    created_at: datetime = attr.attr(factory=datetime.now)
+    updated_at: datetime = attr.attr(factory=datetime.now)
 
     # 测试发现__attrs_post_init__未被执行
     # def __attrs_post_init__(self):

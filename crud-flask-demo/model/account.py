@@ -21,5 +21,5 @@ class Account:
     id: int = attr.attr(metadata={"sql": "id;primary_key"})
     balance: float
     score: float
-    created_at: datetime
-    updated_at: datetime
+    created_at: datetime = attr.attr(factory=datetime.now)
+    updated_at: datetime = attr.attr(factory=datetime.now)
