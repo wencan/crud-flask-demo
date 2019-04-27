@@ -9,10 +9,11 @@ import unittest
 
 from .test_account import TestAccountService
 from .test_user import TestUserService
+from .test_health import TestHealthService
 
 __all__ = ("load_tests")
 
-test_cases = (TestAccountService, TestUserService)
+test_cases = (TestAccountService, TestUserService, TestHealthService)
 
 def load_tests(loader, tests, pattern):
     suite = unittest.TestSuite()

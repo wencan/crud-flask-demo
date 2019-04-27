@@ -26,7 +26,10 @@ class HealthService(HealthAbstractService):
         '''
 
         # 数据库健康状态——各个数据库的服务器时间
-        # 本地服务器时间自动赋值
-        health = self._health_crud.get_health()
+        try:
+            health = self._health_crud.get_health()
+        except Exception as e:
+            health = model.Health.__new__(model.Health)
+            setattr(health, "mysql_time", str(e))
 
         return health
