@@ -8,10 +8,11 @@
 import unittest
 
 from .test_account import TestAccountService
+from .test_user import TestUserService
 
 __all__ = ("load_tests")
 
-test_cases = (TestAccountService, )
+test_cases = (TestAccountService, TestUserService)
 
 def load_tests(loader, tests, pattern):
     suite = unittest.TestSuite()
