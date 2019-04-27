@@ -22,7 +22,7 @@ __all__ = (
             "NoRowsAbstractException")
 
 
-class NoRowsAbstractException(Exception):
+class NoRowsAbstractException(Exception, abc.ABC):
     '''crud not_found 异常抽象基类'''
     pass
 
