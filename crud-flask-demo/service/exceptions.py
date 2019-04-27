@@ -16,5 +16,14 @@ class NotFound(CmdAbstractException):
     _http_status = 404
     
     @property
-    def http_status(self):
+    def http_status(self) -> int:
+        return self._http_status
+
+class Unauthorized(CmdAbstractException):
+    '''无认证，或认证失败'''
+
+    _http_status = 401
+
+    @property
+    def http_status(self) -> int:
         return self._http_status

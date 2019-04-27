@@ -27,14 +27,14 @@ class CmdAbstractException(Exception, abc.ABC):
 
     @property
     @abc.abstractmethod
-    def http_status(self):
+    def http_status(self) -> int:
         '''HTTP状态码'''
 
 
 class PermissionAbstractService(abc.ABC):
     @abc.abstractmethod
-    def basic_authorization(self, username: str, password: str) -> typing.Union[int, None]:
-        '''验证用户名和密码，有效返回用户id，无效返回None'''
+    def basic_authorization(self, username: str, password: str) -> int:
+        '''验证用户名和密码，有效返回用户id，无效抛出认证异常'''
 
     @abc.abstractmethod
     def get_user_permissions(self, user_id: int) -> typing.Iterable[str]:

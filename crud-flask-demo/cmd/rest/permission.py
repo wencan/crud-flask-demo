@@ -32,9 +32,7 @@ class Guard:
                 raise exceptions.Unauthorized()
             
             # 获取用户id
-            user_id = self._service.basic_authorization(auth.username, auth.password)
-            if user_id is None:
-                raise exceptions.Unauthorized()
+            _ = self._service.basic_authorization(auth.username, auth.password)
             
             return f(*args, **kwargs)
         
@@ -52,8 +50,6 @@ class Guard:
                 
                 # 获取用户id
                 user_id = self._service.basic_authorization(auth.username, auth.password)
-                if user_id is None:
-                    raise exceptions.Unauthorized()
                 
                 # 获取用户所有权限
                 permissions = self._service.get_user_permissions(user_id)
