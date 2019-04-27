@@ -24,8 +24,8 @@ __all__ = ("TestUserService", )
 
 class TestUserService(unittest.TestCase):
     #  测试用数据
-    _accounts: typing.MutableMapping[int, model.Account] = dict()
-    _users: typing.MutableMapping[int, model.User] = dict()
+    _accounts: typing.MutableMapping[int, model.Account] = dict({1: model.Account(id=1, balance=0, score=0, created_at=datetime.now(), updated_at=datetime.now())})
+    _users: typing.MutableMapping[int, model.User] = dict({1: model.User(id=1, name="", phone="", account_id=1, account=_accounts[1], created_at=datetime.now(), updated_at=datetime.now())})
 
     def setUp(self):
         # # 开始mock
@@ -53,8 +53,8 @@ class TestUserService(unittest.TestCase):
             return account
         mockAccountCrud.create_account.side_effect = create_account
         # mock AccountAbstractCrud.get_account方法
-        def get_account(id: int) -> model.Account:
-            account = self._accounts.get(id)
+        def get_account(user_id: int) -> model.Account:
+            account = self._accounts.get(user_id)
             if account is None:
                 raise NoRowsForTest()
             return account
@@ -72,8 +72,8 @@ class TestUserService(unittest.TestCase):
             return user
         mockedUserCrud.create_user.side_effect = create_user
         # mock UserAbstractCrud.get_user 方法
-        def get_user(id: int) -> model.User:
-            user = self._users.get(id)
+        def get_user(user_id: int) -> model.User:
+            user = self._users.get(user_id)
             if user is None:
                 raise NoRowsForTest()
             return user
@@ -92,16 +92,20 @@ class TestUserService(unittest.TestCase):
         # self.stop()
         mock.patch.stopall()
 
-    def test_create_and_get_user(self):
+    def test_create_user(self):
         # 成功
         name: str = "".join(random.choices(string.ascii_lowercase, k=6))
         phone: str = "".join(random.choices(string.digits, k=10))
         user = self._service.create_user(name=name, phone=phone)
-        self.assertIsNotNone(user)
         self.assertIsInstance(user, model.User)
         self.assertIsInstance(user.account, model.Account)
         self.assertEqual(name, user.name)
         self.assertEqual(phone, user.phone)
+
+    def test_get_user(self):
+        # 成功
+        user = self._service.get_user(1)
+        self.assertIsInstance(user, model.User)
 
         # not found
         with self.assertRaises(CmdAbstractException) as cm:

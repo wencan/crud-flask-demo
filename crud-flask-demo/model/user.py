@@ -25,7 +25,7 @@ class User:
     name: str = attr.attr(metadata={"sql": "user_name"})
     phone: str = attr.attr(metadata={"sql": "mobile"})
     account_id: int = attr.attr(metadata={"sql": "account_id", "json": "-"})
-    account: Account = attr.attr(converter=lambda d: Account(**d), metadata={"sql": "-"})
+    account: Account = attr.attr(metadata={"sql": "-"})
     created_at: datetime
     updated_at: datetime
 
