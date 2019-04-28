@@ -16,7 +16,7 @@ from werkzeug import exceptions
 
 from . import views
 from .. import abcs
-from . import permission
+from .permission import Guard
 
 __all__ = ("run_restful_app", "Services")
 
@@ -25,7 +25,7 @@ log = logging.getLogger(__name__)
 
 @attr.attrs(auto_attribs=True)
 class Services:
-    permission_service: permission.PermissionAbstractService
+    permission_service: abcs.PermissionAbstractService
     user_service: abcs.UserAbstractService
     account_service: abcs.AccountAbstractService
     health_service: abcs.HealthAbstractService
@@ -41,13 +41,16 @@ def run_restful_app(name: str, services: Services, host: str=None, port: int=Non
     # 服务器错误处理
     app.register_error_handler(Exception, handle_exceptions)
 
+    # 认证和权限检查
+    guard = Guard(services.permission_service)
+
     # 健康检测
     health_handlers = views.HealthHandlers(services.health_service)
     health_view = views.HealthView.as_view("health_api", health_handlers)
     app.add_url_rule("/health", view_func=health_view, methods=("GET",))
 
     # 用户
-    user_handlers = views.UserHandlers(services.permission_service, services.user_service)
+    user_handlers = views.UserHandlers(guard, services.user_service)
     user_view = views.UserView.as_view("user_api", user_handlers)
     # 获得指定用户
     app.add_url_rule("/users/<int:user_id>", view_func=user_view, methods=("GET",))
@@ -55,7 +58,7 @@ def run_restful_app(name: str, services: Services, host: str=None, port: int=Non
     app.add_url_rule("/users", view_func=user_view, methods=("POST",))
 
     # 账户
-    account_handlers = views.AccountHandlers(services.permission_service, services.account_service)
+    account_handlers = views.AccountHandlers(guard, services.account_service)
     account_view = views.AccountView.as_view("account_api", account_handlers)
     # 获得指定账户
     app.add_url_rule("/users/<int:user_id>/accounts/<int:account_id>", view_func=account_view, methods=("GET",))

@@ -14,8 +14,8 @@ from flask.views import MethodView
 from werkzeug.exceptions import BadRequest
 
 from .... import model
-from .. import permission
-from ...abcs import AccountAbstractService
+from ..abc_permission import AbstractGuard
+from ...abcs import AccountAbstractService, PermissionAbstractService
 
 __all__ = ("AccountView", "AccountHandlers")
 
@@ -23,9 +23,9 @@ __all__ = ("AccountView", "AccountHandlers")
 class AccountHandlers:
     '''账户接口处理'''
 
-    def __init__(self, permission_service: permission.PermissionAbstractService, account_service: AccountAbstractService):
+    def __init__(self, guard: AbstractGuard, account_service: AccountAbstractService):
         self._account_service = account_service
-        self._guard = permission.Guard(permission_service)
+        self._guard = guard
 
         readable_required = self._guard.permission_required("account:readable")
         writeable_required = self._guard.permission_required("account:writable")

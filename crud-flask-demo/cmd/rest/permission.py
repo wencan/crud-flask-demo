@@ -11,12 +11,13 @@ from functools import wraps
 from flask import request
 from werkzeug import exceptions
 
+from .abc_permission import AbstractGuard
 from ..abcs import PermissionAbstractService
 
 __all__ = ("Guard", )
 
 
-class Guard:
+class Guard(AbstractGuard):
     '''检查用户是否登录、是否有权限'''
 
     def __init__(self, service: PermissionAbstractService):

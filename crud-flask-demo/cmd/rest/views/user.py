@@ -14,8 +14,8 @@ from flask.views import MethodView
 from werkzeug.exceptions import BadRequest, NotImplemented
 
 from .... import model
-from .. import permission
-from ...abcs import UserAbstractService
+from ..abc_permission import AbstractGuard
+from ...abcs import UserAbstractService, PermissionAbstractService
 
 
 __all__ = ("UserHandlers", "UserView")
@@ -24,9 +24,9 @@ __all__ = ("UserHandlers", "UserView")
 class UserHandlers:
     '''用户接口处理'''
 
-    def __init__(self, permission_service: permission.PermissionAbstractService, user_service: UserAbstractService):
+    def __init__(self, guard: AbstractGuard, user_service: UserAbstractService):
         self._user_service = user_service
-        self._guard = permission.Guard(permission_service)
+        self._guard = guard
 
         # 添加认证检查
         self.get_user = self._guard.authorization_required(self.get_user)
