@@ -24,7 +24,7 @@ class Role:
     id: int = attr.attr(metadata={"sql": "id;primary_key"})
     name: str = attr.attr(metadata={"sql": "role_name"})
     permissions: str
-    # permission_list: typing.Iterable[str] = attr.attr(init=False, metadata={"sql": "-"})
+    # permission_list: typing.Sequence[str] = attr.attr(init=False, metadata={"sql": "-"})
     created_at: datetime = attr.attr(factory=datetime.now)
     updated_at: datetime = attr.attr(factory=datetime.now)
 

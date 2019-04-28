@@ -23,7 +23,7 @@ class UserRoleCrud(UserRoleAbstractCrud):
     def __init__(self, scoped_session_maker: typing.Callable[..., typing.ContextManager[Session]]):
         self._scoped_session_maker = scoped_session_maker
 
-    def get_roles_by_user(self, user_id: int) -> typing.Iterable[int]:
+    def get_roles_by_user(self, user_id: int) -> typing.Sequence[int]:
         '''获得关联到指定用户的角色。即使没关联到角色也返回空序列'''
 
         with self._scoped_session_maker() as session:
