@@ -28,37 +28,10 @@ class TestUserService(unittest.TestCase):
     _users: typing.MutableMapping[int, model.User] = dict({1: model.User(id=1, name="", phone="", account_id=1, account=_accounts[1])})
 
     def setUp(self):
-        # # 开始mock
-        # self._patcher = mock.patch.object(user, "UserAbstractCrud")
-        # # mock类
-        # mockedClass = self._patcher.start()
-
-        # mock crudc 类型
+        # mock UserAbstractCrud
         MockedUserCrud = mock.patch.object(user, "UserAbstractCrud").start()
-        MockedAccountCrud = mock.patch.object(user, "AccountAbstractCrud").start()
         # mock crud 实例
         mockedUserCrud = MockedUserCrud.return_value
-        mockAccountCrud = MockedAccountCrud.return_value
-
-        # mock AccountAbstractCrud.create_account方法
-        def create_account(balance: float=0, score: float=0) -> model.Account:
-            account = model.Account(
-                id=random.randint(100, 10000), 
-                balance=balance,
-                score=score,
-                created_at=datetime.now(),
-                updated_at=datetime.now()
-            )
-            self._accounts[account.id] = account
-            return account
-        mockAccountCrud.create_account.side_effect = create_account
-        # mock AccountAbstractCrud.get_account方法
-        def get_account(user_id: int) -> model.Account:
-            account = self._accounts.get(user_id)
-            if account is None:
-                raise NoRowsForTest()
-            return account
-        mockAccountCrud.get_account.side_effect = get_account
         #mock UserAbstractCrud.create_user 方法
         def create_user(account_id: int, name: str = "", phone: str = "") -> model.User:
             user = model.User.__new__(model.User)
@@ -78,6 +51,29 @@ class TestUserService(unittest.TestCase):
                 raise NoRowsForTest()
             return user
         mockedUserCrud.get_user.side_effect = get_user
+
+        # mock AccountAbstractCrud
+        MockedAccountCrud = mock.patch.object(user, "AccountAbstractCrud").start()
+        mockAccountCrud = MockedAccountCrud.return_value
+        # mock AccountAbstractCrud.create_account方法
+        def create_account(balance: float=0, score: float=0) -> model.Account:
+            account = model.Account(
+                id=random.randint(100, 10000), 
+                balance=balance,
+                score=score,
+                created_at=datetime.now(),
+                updated_at=datetime.now()
+            )
+            self._accounts[account.id] = account
+            return account
+        mockAccountCrud.create_account.side_effect = create_account
+        # mock AccountAbstractCrud.get_account方法
+        def get_account(user_id: int) -> model.Account:
+            account = self._accounts.get(user_id)
+            if account is None:
+                raise NoRowsForTest()
+            return account
+        mockAccountCrud.get_account.side_effect = get_account
 
         # mock session maker 工厂
         @contextmanager

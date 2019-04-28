@@ -19,11 +19,9 @@ __all__ = ("TestHealthService", )
 
 class TestHealthService(unittest.TestCase):
     def setUp(self):
-        # mock crud 类型
+        # mock HealthAbstractService
         MockHealthCrud = mock.patch.object(health, "HealthAbstractService").start()
-        # mock crud 实例
         mockHealthCrud = MockHealthCrud.return_value
-
         # mock HealthAbstractService.get_health方法
         def get_health() -> model.Health:
             health = model.Health.__new__(model.Health)

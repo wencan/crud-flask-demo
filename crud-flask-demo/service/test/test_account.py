@@ -25,17 +25,9 @@ class TestAccountService(unittest.TestCase):
     _accounts: typing.MutableMapping[int, model.Account] = dict({1: model.Account(id=1, balance=0, score=0)})
 
     def setUp(self):
-        # # 开始mock
-        # self._patcher = mock.patch.object(account, "AccountAbstractCrud")
-        # # mock类
-        # mockedClass = self._patcher.start()
-
-        # mock crudc 类型
+        # mock AccountAbstractCrud
         MockedCrud = mock.patch.object(account, "AccountAbstractCrud").start()
-        # mock crud 实例
         mockedCrud = MockedCrud.return_value
-
-        # mock get_account 方法
         # account_id == 1，成功
         # account_id == 0，无效account_id
         # 否则抛出运行时异常
