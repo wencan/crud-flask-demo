@@ -20,7 +20,7 @@ __all__ = ("TestPermissionService", )
 class TestPermissionService(unittest.TestCase):
     _roles: typing.Mapping[int, model.Role] = dict({1: model.Role(id=1, name="", permissions="1:readable;1:writeable"),
                                                     2: model.Role(id=2, name="", permissions="2:readable;2:writeable")})
-    _user_roles: typing.Iterable[model.UserRole] = (model.UserRole(id=1, user_id=1, role_id=1), model.UserRole(id=2, user_id=1, role_id=2))
+    _user_roles: typing.Sequence[model.UserRole] = (model.UserRole(id=1, user_id=1, role_id=1), model.UserRole(id=2, user_id=1, role_id=2))
     _basic_authorizations: typing.Mapping[str, model.BasicAuthorization] = dict({"1": model.BasicAuthorization(id=1, user_id=1, username="1", password="1")})
 
     def setUp(self):
@@ -37,7 +37,7 @@ class TestPermissionService(unittest.TestCase):
         # mock UserRoleCurd
         MockedUserRoleCurd = mock.patch.object(permission, "UserRoleAbstractCrud").start()
         mockedUserRoleCrud = MockedUserRoleCurd.return_value
-        def get_roles_by_user(user_id: int) -> typing.Iterable[int]:
+        def get_roles_by_user(user_id: int) -> typing.Sequence[int]:
             return [user_role.role_id for user_role in self._user_roles if user_role.user_id==user_id]
         mockedUserRoleCrud.get_roles_by_user.side_effect = get_roles_by_user
 

@@ -77,7 +77,7 @@ class RoleAbstractCrud(abc.ABC):
 
 class UserRoleAbstractCrud(abc.ABC):
     @abc.abstractmethod
-    def get_roles_by_user(self, user_id: int) -> typing.Iterable[int]:
+    def get_roles_by_user(self, user_id: int) -> typing.Sequence[int]:
         '''获得关联到指定用户的角色。即使没关联到角色也返回空序列'''
 
 class HealthAbstractCrud(abc.ABC):

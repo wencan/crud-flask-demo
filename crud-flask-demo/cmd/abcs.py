@@ -37,7 +37,7 @@ class PermissionAbstractService(abc.ABC):
         '''验证用户名和密码，有效返回用户id，无效抛出认证异常'''
 
     @abc.abstractmethod
-    def get_user_permissions(self, user_id: int) -> typing.Iterable[str]:
+    def get_user_permissions(self, user_id: int) -> typing.Sequence[str]:
         '''查询用户所有权限作用域'''
 
 

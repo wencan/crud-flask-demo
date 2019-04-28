@@ -31,7 +31,7 @@ class PermissionService(PermissionAbstractService):
         except NoRowsAbstractException:
             raise Unauthorized()
 
-    def get_user_permissions(self, user_id: int) -> typing.Iterable[str]:
+    def get_user_permissions(self, user_id: int) -> typing.Sequence[str]:
         '''查询用户所有权限作用域'''
         role_ids = self._user_role_crud.get_roles_by_user(user_id)
         roles = [self._role_crud.get_role(role_id) for role_id in role_ids]
