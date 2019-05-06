@@ -5,8 +5,19 @@
 
 需要 Python 3.6+ 。
 
+#### 开发目标
+
+~~实现类似于 Go 结构体的公共数据模型~~ *已实现，待完善*
+
+~~基于[SOLID](https://zh.wikipedia.org/wiki/SOLID_(%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1))原则，实现解藕和单元测试友好~~ *已实现*
+
+基于mock的单元测试 *实现中*
+
+移植到asyncio *计划中*
+
 #### 运行
 python3 -m crud-flask-demo
 
 #### 单元测试
-python3 -m crud-flask-demo
+python3 -m unittest -v crud-flask-demo
+
