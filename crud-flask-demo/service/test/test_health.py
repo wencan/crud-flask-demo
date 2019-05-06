@@ -18,6 +18,8 @@ __all__ = ("TestHealthService", )
 
 
 class TestHealthService(unittest.TestCase):
+    mysql_errmsg = "dbase broken"
+
     def setUp(self):
         # mock HealthAbstractService
         MockHealthCrud = mock.patch.object(health, "HealthAbstractService").start()
@@ -28,10 +30,8 @@ class TestHealthService(unittest.TestCase):
             health.mysql_time = str(datetime.now())
             health.server_time = str(datetime.now())
             return health
-        def raise_exception() -> typing.NoReturn:
-            raise RuntimeError("test")
         # 第一次调用成功，第二次抛出异常
-        mockHealthCrud.get_health.side_effect = mock.MagicMock(side_effect=(get_health(), ))
+        mockHealthCrud.get_health.side_effect = mock.MagicMock(side_effect=(get_health(), RuntimeError(self.mysql_errmsg)))
 
         # 基于mock对象创建测试对象
         self._service = health.HealthService(mockHealthCrud)
@@ -48,8 +48,7 @@ class TestHealthService(unittest.TestCase):
         # 异常
         h = self._service.get_health()
         # 当mysql发生异常时，mysql_time应该是异常消息
-        with self.assertRaises(ValueError):
-            datetime.strptime(h.mysql_time, "%Y-%m-%d %H:%M:%S.%f")
+        self.assertEqual(h.mysql_time, self.mysql_errmsg)
     
 
 if __name__ == "__main__":
