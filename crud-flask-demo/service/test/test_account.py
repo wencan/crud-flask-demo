@@ -31,14 +31,14 @@ class TestAccountService(unittest.TestCase):
         # account_id == 1，成功
         # account_id == 0，无效account_id
         # 否则抛出运行时异常
-        def get_account(account_id: int):
+        def get_account(account_id: int) -> model.Account:
             account = self._accounts.get(account_id)
             if account is None:
                 raise NoRowsForTest()
             return copy.copy(account)
         mockedCrud.get_account.side_effect = get_account
         #mock AccountAbstractCrud.add_balance 方法
-        def add_balance(account_id: int, value: float):
+        def add_balance(account_id: int, value: float) -> model.Account:
             account = self._accounts.get(account_id)
             if account is None:
                 raise NoRowsForTest()
@@ -46,7 +46,7 @@ class TestAccountService(unittest.TestCase):
             return copy.copy(account)
         mockedCrud.add_balance.side_effect = add_balance
         # mock AccountAbstractCrud.add_score 方法
-        def add_score(account_id: int, value: float):
+        def add_score(account_id: int, value: float) -> model.Account:
             account = self._accounts.get(account_id)
             if account is None:
                 raise NoRowsForTest()
