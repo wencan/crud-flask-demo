@@ -7,7 +7,7 @@ import typing
 from .. import model
 from .. cmd.abcs import AccountAbstractService
 from .exceptions import NotFound
-from .abcs import AccountAbstractCrud, NoRowsAbstractException
+from .abcs import AccountRequiredAccountAbstractCrud as AccountAbstractCrud, NoRowsAbstractException
 
 __all__ = ("AccountService", )
 

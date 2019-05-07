@@ -18,6 +18,7 @@ from ... import model
 from .. import user
 from .exception import NoRowsForTest
 from ...cmd.abcs import CmdAbstractException
+from ..abcs import UserAbstractCrud, UserRequiredAccountAbstractCrud as AccountAbstractCrud
 
 __all__ = ("TestUserService", )
 
@@ -28,10 +29,8 @@ class TestUserService(unittest.TestCase):
     _users: typing.MutableMapping[int, model.User] = dict({1: model.User(id=1, name="", phone="", account_id=1, account=_accounts[1])})
 
     def setUp(self):
-        # mock UserAbstractCrud
-        MockedUserCrud = mock.patch.object(user, "UserAbstractCrud").start()
         # mock crud 实例
-        mockedUserCrud = MockedUserCrud.return_value
+        mockedUserCrud = mock.create_autospec(spec=UserAbstractCrud, instance=True)
         #mock UserAbstractCrud.create_user 方法
         def create_user(account_id: int, name: str = "", phone: str = "") -> model.User:
             user = model.User.__new__(model.User)
@@ -53,16 +52,13 @@ class TestUserService(unittest.TestCase):
         mockedUserCrud.get_user.side_effect = get_user
 
         # mock AccountAbstractCrud
-        MockedAccountCrud = mock.patch.object(user, "AccountAbstractCrud").start()
-        mockAccountCrud = MockedAccountCrud.return_value
+        mockAccountCrud = mock.create_autospec(spec=AccountAbstractCrud, instance=True)
         # mock AccountAbstractCrud.create_account方法
         def create_account(balance: float=0, score: float=0) -> model.Account:
             account = model.Account(
                 id=random.randint(100, 10000), 
                 balance=balance,
-                score=score,
-                created_at=datetime.now(),
-                updated_at=datetime.now()
+                score=score
             )
             self._accounts[account.id] = account
             return account
@@ -76,17 +72,10 @@ class TestUserService(unittest.TestCase):
         mockAccountCrud.get_account.side_effect = get_account
 
         # mock session maker 工厂
-        @contextmanager
-        def mockedSessionMaker(subtransactions_supported: bool=False):
-            yield None
+        mockedSessionMaker = mock.Mock(return_value=mock.create_autospec(spec=typing.ContextManager, instance=True))
 
         # 基于mock对象创建测试对象
         self._service = user.UserService(user_crud=mockedUserCrud, account_crud=mockAccountCrud, scoped_session_maker=mockedSessionMaker)
-
-    def tearDown(self):
-        # mock结束
-        # self.stop()
-        mock.patch.stopall()
 
     def test_create_user(self):
         # 成功

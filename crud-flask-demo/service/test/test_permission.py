@@ -14,6 +14,7 @@ from .exception import NoRowsForTest
 from ... import model
 from .. import permission
 from ...cmd.abcs import CmdAbstractException
+from ..abcs import RoleAbstractCrud, UserRoleAbstractCrud, BasicAuthorizationAbstractCrud, NoRowsAbstractException
 
 __all__ = ("TestPermissionService", )
 
@@ -25,8 +26,7 @@ class TestPermissionService(unittest.TestCase):
 
     def setUp(self):
         # mock RoleCrud
-        MockedRoleCrud = mock.patch.object(permission, "RoleAbstractCrud").start()
-        mockedRoleCrud = MockedRoleCrud.return_value
+        mockedRoleCrud = mock.create_autospec(spec=RoleAbstractCrud, instance=True)
         def get_role(role_id: int) -> model.Role:
             role = self._roles.get(role_id)
             if role is None:
@@ -35,15 +35,13 @@ class TestPermissionService(unittest.TestCase):
         mockedRoleCrud.get_role.side_effect = get_role
 
         # mock UserRoleCurd
-        MockedUserRoleCurd = mock.patch.object(permission, "UserRoleAbstractCrud").start()
-        mockedUserRoleCrud = MockedUserRoleCurd.return_value
+        mockedUserRoleCrud = mock.create_autospec(spec=UserRoleAbstractCrud, instance=True)
         def get_roles_by_user(user_id: int) -> typing.Sequence[int]:
             return [user_role.role_id for user_role in self._user_roles if user_role.user_id==user_id]
         mockedUserRoleCrud.get_roles_by_user.side_effect = get_roles_by_user
 
         # mock BasicAuthorizationAbstractCrud
-        MockBasicAuthorizationCrud = mock.patch.object(permission, "BasicAuthorizationAbstractCrud").start()
-        mockBasicAuthorizationCrud = MockBasicAuthorizationCrud.return_value
+        mockBasicAuthorizationCrud = mock.create_autospec(spec=BasicAuthorizationAbstractCrud, instance=True)
         def verify_username_password(username: str, password: str) -> int:
             auth = self._basic_authorizations.get(username)
             if auth is not None and auth.username == username and auth.password == password:

@@ -12,7 +12,7 @@ from datetime import datetime
 
 from .. import health
 from ... import model
-from .. import health
+from ..abcs import HealthAbstractCrud
 
 __all__ = ("TestHealthService", )
 
@@ -22,8 +22,7 @@ class TestHealthService(unittest.TestCase):
 
     def setUp(self):
         # mock HealthAbstractService
-        MockHealthCrud = mock.patch.object(health, "HealthAbstractService").start()
-        mockHealthCrud = MockHealthCrud.return_value
+        mockHealthCrud = mock.create_autospec(spec=HealthAbstractCrud)
         # mock HealthAbstractService.get_health方法
         def get_health() -> model.Health:
             health = model.Health.__new__(model.Health)
@@ -35,9 +34,6 @@ class TestHealthService(unittest.TestCase):
 
         # 基于mock对象创建测试对象
         self._service = health.HealthService(mockHealthCrud)
-    
-    def tearDown(self):
-        mock.patch.stopall()
     
     def test_get_health(self) -> model.Health:
         # 成功

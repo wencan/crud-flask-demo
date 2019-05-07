@@ -16,6 +16,7 @@ from ... import model
 from .. import account
 from .exception import NoRowsForTest
 from ...cmd.abcs import CmdAbstractException
+from ..abcs import AccountRequiredAccountAbstractCrud as AccountAbstractCrud
 
 __all__ = ("TestAccountService", )
 
@@ -26,8 +27,7 @@ class TestAccountService(unittest.TestCase):
 
     def setUp(self):
         # mock AccountAbstractCrud
-        MockedCrud = mock.patch.object(account, "AccountAbstractCrud").start()
-        mockedCrud = MockedCrud.return_value
+        mockedCrud = mock.create_autospec(AccountAbstractCrud, instance=True)
         # account_id == 1，成功
         # account_id == 0，无效account_id
         # 否则抛出运行时异常
@@ -55,15 +55,10 @@ class TestAccountService(unittest.TestCase):
         mockedCrud.add_score.side_effect = add_score
 
         # mock session maker 工厂
-        mockedSessionMaker = mock.Mock(return_value=mock.Mock(__enter__=mock.Mock(), __exit__=mock.Mock()))
+        mockedSessionMaker = mock.Mock(return_value=mock.create_autospec(spec=typing.ContextManager, instance=True))
 
         # 基于mock对象创建测试对象
         self._service = account.AccountService(account_crud=mockedCrud, scoped_session_maker=mockedSessionMaker)
-
-    def tearDown(self):
-        # mock结束
-        # self.stop()
-        mock.patch.stopall()
 
     def test_get_account(self):
         # 成功
