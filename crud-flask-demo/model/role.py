@@ -24,10 +24,15 @@ class Role:
     id: int = attr.attr(metadata={"sql": "id;primary_key"})
     name: str = attr.attr(metadata={"sql": "role_name"})
     permissions: str
-    # permission_list: typing.Sequence[str] = attr.attr(init=False, metadata={"sql": "-"})
+    _permission_list: typing.Sequence[str] = attr.attr(init=False, default=None, metadata={"sql": "-"})
     created_at: datetime = attr.attr(factory=datetime.now)
     updated_at: datetime = attr.attr(factory=datetime.now)
 
-    # 测试发现__attrs_post_init__未被执行
-    # def __attrs_post_init__(self):
-    #     self.permission_list = self.permissions.split(";")
+
+    # 原计划使用__attrs_post_init__实现。但当对象__init__未被调用时，__attrs_post_init__不会被执行
+    # 改用property实现
+    @property
+    def permission_list(self):
+        if self._permission_list is None:
+            self._permission_list = self.permissions.split(";")
+        return self._permission_list

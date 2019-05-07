@@ -35,5 +35,5 @@ class PermissionService(PermissionAbstractService):
         '''查询用户所有权限作用域'''
         role_ids = self._user_role_crud.get_roles_by_user(user_id)
         roles = [self._role_crud.get_role(role_id) for role_id in role_ids]
-        permissions = list(chain(*[role.permissions.split(";") for role in roles]))
+        permissions = list(chain(*[role.permission_list for role in roles]))
         return permissions
