@@ -15,7 +15,7 @@ from werkzeug.exceptions import BadRequest
 
 from .... import model
 from ..abc_permission import AbstractGuard
-from ...abcs import AccountAbstractService, PermissionAbstractService
+from ...abcs import AccountAbstractService
 
 __all__ = ("AccountView", "AccountHandlers")
 
@@ -41,7 +41,7 @@ class AccountHandlers:
     
     # @guard.permission_required("account:writable")
     def recharge(self, account_id: int):
-        value = flask.request.form.get("value")
+        value = flask.request.form.get("value", type=int)
         if value is None:
             raise BadRequest("not value")
 

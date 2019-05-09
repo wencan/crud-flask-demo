@@ -5,12 +5,11 @@
 
 import unittest
 
-from ..service import test as test_service
-from ..cmd import test as test_cmd
+from ..rest import test as test_rest
 
 __all__ = ("load_tests", )
 
-modules = (test_service, test_cmd)
+modules = (test_rest, )
 
 def load_tests(loader, tests, pattern):
     suite = unittest.TestSuite()
