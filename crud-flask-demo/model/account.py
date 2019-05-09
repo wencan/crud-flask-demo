@@ -19,7 +19,7 @@ class Account:
     __tablename__ = "basic_account"
 
     id: int = attr.attr(metadata={"sql": "id;primary_key"})
-    balance: float
-    score: float
+    balance: float = attr.attr(default=0)
+    score: float = attr.attr(default=0)
     created_at: datetime = attr.attr(factory=datetime.now)
     updated_at: datetime = attr.attr(factory=datetime.now)

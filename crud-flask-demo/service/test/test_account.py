@@ -23,7 +23,7 @@ __all__ = ("TestAccountService", )
 
 class TestAccountService(unittest.TestCase):
     #  测试用数据
-    _accounts: typing.MutableMapping[int, model.Account] = dict({1: model.Account(id=1, balance=0, score=0)})
+    _accounts: typing.MutableMapping[int, model.Account] = dict({1: model.Account(id=1)})
 
     def setUp(self):
         # mock AccountAbstractCrud

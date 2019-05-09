@@ -22,10 +22,10 @@ class User:
     __tablename__ = "basic_user"
 
     id: int = attr.attr(metadata={"sql": "id;primary_key"})
-    name: str = attr.attr(metadata={"sql": "user_name"})
-    phone: str = attr.attr(metadata={"sql": "mobile"})
     account_id: int = attr.attr(metadata={"sql": "account_id", "json": "-"})
     account: Account = attr.attr(metadata={"sql": "-"})
+    name: str = attr.attr(default="", metadata={"sql": "user_name"})
+    phone: str = attr.attr(default="", metadata={"sql": "mobile"})
     created_at: datetime = attr.attr(factory=datetime.now)
     updated_at: datetime = attr.attr(factory=datetime.now)
 

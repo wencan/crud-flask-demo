@@ -25,8 +25,8 @@ __all__ = ("TestUserService", )
 
 class TestUserService(unittest.TestCase):
     #  测试用数据
-    _accounts: typing.MutableMapping[int, model.Account] = dict({1: model.Account(id=1, balance=0, score=0)})
-    _users: typing.MutableMapping[int, model.User] = dict({1: model.User(id=1, name="", phone="", account_id=1, account=_accounts[1])})
+    _accounts: typing.MutableMapping[int, model.Account] = dict({1: model.Account(id=1)})
+    _users: typing.MutableMapping[int, model.User] = dict({1: model.User(id=1, account_id=1, account=_accounts[1])})
 
     def setUp(self):
         # mock crud 实例
@@ -36,7 +36,7 @@ class TestUserService(unittest.TestCase):
             user = model.User.__new__(model.User)
             setattr(user, "id", random.randint(100, 1000))
             setattr(user, "name", name)
-            setattr(user,"phone", phone)
+            setattr(user, "phone", phone)
             setattr(user, "account_id", account_id)
             setattr(user, "created_at", datetime.now())
             setattr(user, "updated_at", datetime.now())
