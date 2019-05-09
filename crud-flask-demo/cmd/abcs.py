@@ -57,7 +57,7 @@ class UserAbstractService(abc.ABC):
     '''用户服务抽象基类'''
 
     @abc.abstractmethod
-    def get_user(self, user_id) -> model.User:
+    def get_user(self, user_id: int) -> model.User:
         '''获取指定用户，没找到错误待定义'''
     
     @abc.abstractmethod

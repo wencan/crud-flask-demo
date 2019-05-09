@@ -15,7 +15,7 @@ from werkzeug.exceptions import BadRequest, NotImplemented
 
 from .... import model
 from ..abc_permission import AbstractGuard
-from ...abcs import UserAbstractService, PermissionAbstractService
+from ...abcs import UserAbstractService
 
 
 __all__ = ("UserHandlers", "UserView")

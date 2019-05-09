@@ -9,10 +9,11 @@
 import unittest
 
 from .test_account import TestAccountAPI
+from .test_user import TestUserAPI
 
 __all__ = ("load_tests")
 
-test_cases = (TestAccountAPI, )
+test_cases = (TestAccountAPI, TestUserAPI)
 
 def load_tests(loader, tests, pattern):
     suite = unittest.TestSuite()

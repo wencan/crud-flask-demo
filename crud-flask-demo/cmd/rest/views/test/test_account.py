@@ -18,7 +18,6 @@ from ..account import AccountHandlers, AccountView
 from ..... import model
 from ...abc_permission import AbstractGuard
 from ....abcs import AccountAbstractService, CmdAbstractException
-from ...app import handle_exceptions
 
 __all__ = ("TestAccountAPI")
 
