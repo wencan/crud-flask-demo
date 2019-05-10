@@ -33,17 +33,17 @@ class UserCrud(UserAbstractCrud):
             user_id = res.inserted_primary_key
 
             #查询新插入的对象
-            user = session.query(model.User).filter(model.User.id==user_id).first()
+            user = session.query(model.User).filter_by(id=user_id).first()
             if user is None:
                 raise NoRows()
             return user
 
     
-    def get_user(self, account_id) -> model.User:
+    def get_user(self, user_id) -> model.User:
         '''获得指定用户，没找到返回None'''
 
         with self._scoped_session_maker() as session:
-            user = session.query(model.User).filter(model.User.id==account_id).first()
+            user = session.query(model.User).filter_by(id=user_id).first()
             if user is None:
                 raise NoRows()
             return user
